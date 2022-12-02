@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conf-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: conf
+spec:
+  selector:
+    matchLabels:
+      app: conf
+  template:
+    metadata:
+      labels:
+        app: conf
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - name: html
+            mountPath: /usr/share/nginx/html/index.html
+            subPath: {{ .Values.html }}
+        ports:
+        - containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+      volumes:
+      - name: html
+        configMap:
+          name: conf-html-configmap
