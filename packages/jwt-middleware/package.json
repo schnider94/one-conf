@@ -1,0 +1,22 @@
+{
+  "name": "@one-conf/jwt-middleware",
+  "version": "1.0.0",
+  "description": "JWT middleware used in all conf-one microservices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schnider94/one-conf.git"
+  },
+  "author": "Fabian Ladenstein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/schnider94/one-conf/issues"
+  },
+  "homepage": "https://github.com/schnider94/one-conf#readme",
+  "dependencies": {
+    "passport-jwt": "^4.0.1"
+  }
+}

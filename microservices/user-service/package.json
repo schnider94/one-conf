@@ -1,0 +1,30 @@
+{
+  "name": "user-service",
+  "version": "1.0.0",
+  "description": "MicroService which manages application users for one-conf.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schnider94/one-conf.git"
+  },
+  "author": "Fabian Ladenstein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/schnider94/one-conf/issues"
+  },
+  "homepage": "https://github.com/schnider94/one-conf#readme",
+  "dependencies": {
+    "@one-conf/jwt-middleware": "file:../../packages/jwt-middleware",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.8.2",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
+  }
+}
