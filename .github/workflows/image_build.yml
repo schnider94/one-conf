@@ -26,5 +26,5 @@ jobs:
           context: ./microservices/user-service
           push: true
           tags: schnider94/conf:user-service
-          build-args:
-            - GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          build-args: |
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
