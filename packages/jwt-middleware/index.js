@@ -7,7 +7,7 @@ exports.setup = function(publicKey) {
         new JWTstrategy(
             {
                 secretOrKey: publicKey,
-                jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken('secret_token')
+                jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
             },
             async (token, done) => {
                 try {

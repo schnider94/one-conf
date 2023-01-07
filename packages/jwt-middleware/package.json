@@ -1,6 +1,6 @@
 {
   "name": "@schnider94/jwt-middleware",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "JWT middleware used in all conf-one microservices",
   "main": "index.js",
   "scripts": {

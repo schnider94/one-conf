@@ -8,6 +8,12 @@ router.get('/', (_, res) => {
     });
 });
 
+router.get('/test', (_, res) => {
+    return res.json({
+        message: 'TEST',
+    });
+});
+
 router.get(
     '/user',
     (req, res) => {
