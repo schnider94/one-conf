@@ -27,4 +27,4 @@ jobs:
           push: true
           tags: schnider94/conf:user-service
           build-args: |
-            NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}
+            NPM_TOKEN=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
