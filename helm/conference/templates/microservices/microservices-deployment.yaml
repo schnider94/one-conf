@@ -17,12 +17,12 @@ spec:
       labels:
         app: microservice-{{ $v.name }}
     spec:
+      imagePullSecrets:
+      - name: docker-registry-secret
       containers:
       - name: {{ $v.name }}
         image: {{ $v.image }}
         imagePullPolicy: Always
-        imagePullSecrets:
-          - name: docker-registry-secret
         ports:
           - containerPort: 4000
         livenessProbe:

@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/schnider94/one-conf#readme",
   "dependencies": {
-    "@schnider94/jwt-middleware": "^1.0.0",
+    "@schnider94/jwt-middleware": "^1.0.1",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.19.0",
     "express": "^4.18.2",

@@ -1,6 +1,6 @@
 {
   "name": "@schnider94/jwt-middleware",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "JWT middleware used in all conf-one microservices",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
   },
   "homepage": "https://github.com/schnider94/one-conf#readme",
   "dependencies": {
+    "passport": "^0.4.1",
     "passport-jwt": "^4.0.1"
   }
 }
