@@ -22,8 +22,7 @@ router.post(
         async (err, user, message) => {
             try {
                 if (err || !user) {
-                    console.log(err, message);
-                    const error = new Error('An error occurred.');
+                    const error = new Error(`An error occurred: ${message.message}`);
 
                     return next(error);
                 }

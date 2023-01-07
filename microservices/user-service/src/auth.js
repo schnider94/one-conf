@@ -22,7 +22,7 @@ const setupPassport = function() {
             }
         )
     );
-    
+
     passport.use(
         'login',
         new localStrategy(
