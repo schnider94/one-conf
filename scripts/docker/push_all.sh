@@ -4,6 +4,7 @@ export SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null &&
 
 dir_path="$SCRIPT_DIR/../../microservices"
 
+
 for dir in "$dir_path"/*/ ; do
     dir_name="${dir#$dir_path}"
     dir_name="${dir_name%/}"
