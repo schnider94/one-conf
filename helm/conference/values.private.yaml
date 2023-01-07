@@ -6,6 +6,6 @@ microservices:
     image: ghcr.io/schnider94/user_service:latest
     port: 4001
     db:
-      password: FOeD8FQRseRpc5i6a+rgkJFHD62/1+4eUvupATpcHsE=
+      password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
       username: root
       name: user

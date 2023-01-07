@@ -40,7 +40,7 @@ spec:
             scheme: HTTP
       - name: mongodb
         image: mongo:4.4.18
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
           - name: MONGO_INITDB_ROOT_USERNAME
             value: {{ $v.db.username }}

@@ -12,7 +12,7 @@ const setupDatabase = function(callback) {
     let counter = 0;
 
     const connect = () => {
-        console.log('Connect to Mongodb...')
+        console.log(`Connect to Mongodb ${connectString} ...`)
         counter++;
 
         mongoose.connect(connectString, {
