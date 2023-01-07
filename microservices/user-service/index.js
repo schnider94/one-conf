@@ -5,7 +5,6 @@ const server = require('@schnider94/server');
 const passport = require('passport');
 
 const auth = require('./src/auth');
-const server = require('./src/server');
 
 // Routes
 const routes = require('./src/routes');
