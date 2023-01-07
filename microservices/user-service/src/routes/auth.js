@@ -4,8 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-router.get('/healthz', (_, res) => res.sendStatus(200));
-
 router.post(
     '/signup',
     passport.authenticate('signup', { session: false }),

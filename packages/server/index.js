@@ -12,6 +12,8 @@ exports.create = function(use) {
     app.use(requestLogger);
     app.use(bodyParser.urlencoded({ extended: false }));
 
+    app.get('/healthz', (_, res) => res.sendStatus(200));
+
     use(app);
 
     app.use(function(err, _, res, _) {
