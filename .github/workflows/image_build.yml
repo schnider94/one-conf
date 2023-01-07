@@ -25,6 +25,6 @@ jobs:
         with:
           context: ./microservices/user-service
           push: true
-          tags: schnider94/conf:user-service
+          tags: ghcr.io/schnider94/conf:user-service
           build-args: |
-            NPM_TOKEN=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
+            NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}
