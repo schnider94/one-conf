@@ -8,7 +8,7 @@ for dir in "$dir_path"/*/ ; do
     dir_name="${dir#$dir_path}"
     dir_name="${dir_name%/}"
 
-    image_name="cloud.canister.io:5000/conf$dir_name:latest"
+    image_name="ghcr.io/schnider94/$dir_name:latest"
 
     docker build -t "$image_name" "$dir"
     docker push "$image_name"
