@@ -7,7 +7,7 @@ const setupDatabase = function(callback) {
     const password = process.env.DB_PASSWORD;
     const database = process.env.DB_NAME;
 
-    const connectString = `mongodb://${username}:${password}@${host}/${database}`;
+    const connectString = `mongodb://${username}:${password}@${host}`;
 
     let counter = 0;
 
