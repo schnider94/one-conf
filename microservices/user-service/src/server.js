@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const auth = require('./auth');
-const jwtMiddleware = require('@one-conf/jwt-middleware');
+const jwtMiddleware = require('@schnider94/jwt-middleware');
 
 auth.setupPassport();
 
