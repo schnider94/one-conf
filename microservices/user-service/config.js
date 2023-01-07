@@ -34,7 +34,7 @@ const setupDatabase = function(callback) {
     });
     connect();
 
-    mongoose.connection.on('open', callback);
+    mongoose.connection.on('open', () => callback());
 
     mongoose.Promise = global.Promise;
 }

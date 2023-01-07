@@ -41,8 +41,11 @@ spec:
       - name: mongodb
         image: mongo:4.4.18
         imagePullPolicy: Always
-        environment:
-          MONGO_INITDB_ROOT_USERNAME: {{ $v.db.username }}
-          MONGO_INITDB_ROOT_PASSWORD: {{ $v.db.password }}
-          MONGO_INITDB_DATABASE: {{ $v.db.name }}
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: {{ $v.db.username }}
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: {{ $v.db.password }}
+          - name: MONGO_INITDB_DATABASE
+            value: {{ $v.db.name }}
 {{- end }}
