@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const setupDatabase = function() {
+const setupDatabase = function(callback) {
     // DATABASE
     const host = process.env.DB_HOST;
     const username = process.env.DB_USERNAME;
@@ -9,11 +9,33 @@ const setupDatabase = function() {
 
     const connectString = `mongodb://${username}:${password}@${host}/${database}`;
 
-    mongoose.connect(connectString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
+    let counter = 0;
+
+    const connect = () => {
+        console.log('Connect to Mongodb...')
+        counter++;
+
+        mongoose.connect(connectString, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+
+        if (counter > 50) {
+            console.error('Connection failed 50 times, exiting...');
+            exit(1);
+        }
+    };
+
+    mongoose.connection.on('error', function(error) {
+        console.log(error);
+        counter++;
+
+        setTimeout(connect, 5000);
     });
-    mongoose.connection.on('error', error => console.log(error) );
+    connect();
+
+    mongoose.connection.on('open', callback);
+
     mongoose.Promise = global.Promise;
 }
 
