@@ -20,7 +20,7 @@
     "@schnider94/app": "^1.0.0",
     "@schnider94/database": "^1.0.1",
     "@schnider94/jwt-middleware": "^1.0.2",
-    "@schnider94/server": "^1.0.2",
+    "@schnider94/server": "^1.0.3",
     "bcrypt": "^5.1.0",
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",

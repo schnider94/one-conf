@@ -17,6 +17,7 @@ exports.create = function(use) {
     use(app);
 
     app.use(function(err, _, res, _) {
+        console.log('Error: ', err);
         res.status(err.status || 500);
         res.json({ error: err });
     });
