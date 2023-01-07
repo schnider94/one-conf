@@ -5,8 +5,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: microservice-{{ $v.name }}-service
-  namespace: {{ .Release.Namespace }}
-{{- if eq .Values.env "public" }}
+  namespace: {{ $.Release.Namespace }}
+{{- if eq $.Values.env "public" }}
   annotations:
     cloud.google.com/backend-config: '{"default": "microservices-backendconfig"}'
 {{- end }}
