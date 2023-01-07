@@ -6,6 +6,12 @@ const router = express.Router();
 
 router.get('/healthz', (_, res) => res.sendStatus(200));
 
+router.get('/', (_, res) => {
+    return res.json({
+        message: 'Conferense user-service API v1',
+    });
+});
+
 router.post(
     '/signup',
     passport.authenticate('signup', { session: false }),

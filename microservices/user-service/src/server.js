@@ -17,7 +17,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', routes);
-app.use('/user', passport.authenticate('jwt', { session: false }), secureRoutes);
+app.use('/auth', passport.authenticate('jwt', { session: false }), secureRoutes);
 
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
