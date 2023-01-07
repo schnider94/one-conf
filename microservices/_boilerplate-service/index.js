@@ -1,5 +1,6 @@
 const { createApp } = require('@schnider94/app');
 const database = require('@schnider94/database');
+const jwtMiddleware = require('@schnider94/jwt-middleware');
 const passport = require('passport');
 
 const server = require('./src/server');
@@ -13,6 +14,11 @@ createApp()
             password: process.env.DB_PASSWORD,
             callback: next,
         });
+    })
+    .use(function(next) {
+        jwtMiddleware.setup(process.env.JWT_SECRET);
+
+        next();
     })
     .start(
         server.create((app) => {

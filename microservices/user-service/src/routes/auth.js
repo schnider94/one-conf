@@ -36,8 +36,7 @@ router.post(
                         if (error) return next(error);
 
                         const body = { _id: user._id };
-                        // TODO: Replace public_key with secret or private RSA key
-                        const token = jwt.sign({ user: body }, 'public_key');
+                        const token = jwt.sign({ user: body }, process.env.JWT_SECRET);
 
                         return res.json({ token });
                     }

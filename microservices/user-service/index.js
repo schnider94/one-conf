@@ -22,8 +22,7 @@ createApp()
     })
     .use(function(next) {
         auth.setupPassport();
-        // TODO: Replace public_key with secret or public RSA key
-        jwtMiddleware.setup('public_key');
+        jwtMiddleware.setup(process.env.JWT_SECRET);
 
         next();
     })
