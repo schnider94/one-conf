@@ -8,4 +8,3 @@ microservices:
     db:
       password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
       username: root
-      name: user

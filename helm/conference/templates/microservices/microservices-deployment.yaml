@@ -46,6 +46,4 @@ spec:
             value: {{ $v.db.username }}
           - name: MONGO_INITDB_ROOT_PASSWORD
             value: {{ $v.db.password }}
-          # - name: MONGO_INITDB_DATABASE
-          #   value: {{ $v.db.name }}
 {{- end }}

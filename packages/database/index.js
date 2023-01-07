@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 
-const setupDatabase = function(callback) {
-    // DATABASE
-    const host = process.env.DB_HOST;
-    const username = process.env.DB_USERNAME;
-    const password = process.env.DB_PASSWORD;
-    const database = process.env.DB_NAME;
+exports.connect = function(props) {
+    const {
+        host,
+        username,
+        password,
+        callback,
+    } = props;
 
+    // DATABASE
     const connectString = `mongodb://${username}:${password}@${host}`;
 
     let counter = 0;
@@ -37,8 +39,4 @@ const setupDatabase = function(callback) {
     mongoose.connection.on('open', () => callback());
 
     mongoose.Promise = global.Promise;
-}
-
-module.exports = {
-    setupDatabase,
 }
