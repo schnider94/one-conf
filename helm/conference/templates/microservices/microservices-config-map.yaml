@@ -1,0 +1,13 @@
+{{- range $v := .Values.microservices }}
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: microservice-{{ $v.name }}-configmap
+data:
+  DB_HOST: 127.0.0.1
+  DB_USERNAME: {{ $v.db.username }}
+  DB_PASSWORD: {{ $v.db.password }}
+  DB_NAME: {{ $v.db.name }}
+{{- end }}

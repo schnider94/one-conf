@@ -23,6 +23,9 @@ spec:
       - name: {{ $v.name }}
         image: {{ $v.image }}
         imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+          name: microservice-{{ $v.name }}-configmap
         ports:
           - containerPort: 4000
         livenessProbe:
@@ -35,4 +38,11 @@ spec:
             path: /healthz
             port: 4000
             scheme: HTTP
+      - name: mongodb
+        image: mongo
+        imagePullPolicy: Always
+        environment:
+          MONGO_INITDB_ROOT_USERNAME: {{ $v.db.username }}
+          MONGO_INITDB_ROOT_PASSWORD: {{ $v.db.password }}
+          MONGO_INITDB_DATABASE: {{ $v.db.name }}
 {{- end }}
