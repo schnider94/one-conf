@@ -17,3 +17,15 @@ spec:
       name: conf-service
       port:
         number: 8000
+{{- range $v := .Values.microservices }}
+  rules:
+  - http:
+      paths:
+      - path: /{{ $v.name }}
+        pathType: Prefix
+        backend:
+          service:
+            name: microservice-{{ $v.name }}-service
+            port:
+              number: {{ $v.port }}
+{{- end }}

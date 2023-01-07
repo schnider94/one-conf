@@ -1,2 +1,7 @@
 env: private
 html: private.html
+
+microservices:
+  - name: user
+    image: ghcr.io/schnider94/user_service:latest
+    port: 4001

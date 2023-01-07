@@ -1,0 +1,20 @@
+{{- range $v := .Values.microservices }}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice-{{ $v.name }}-service
+  namespace: {{ .Release.Namespace }}
+{{- if eq .Values.env "public" }}
+  annotations:
+    cloud.google.com/backend-config: '{"default": "microservices-backendconfig"}'
+{{- end }}
+spec:
+  selector:
+    app: microservice-{{ $v.name }}
+  ports:
+    - port: {{ $v.port }}
+      targetPort: 4000
+      protocol: TCP
+{{- end }}

@@ -1,0 +1,36 @@
+{{- range $v := .Values.microservices }}
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-{{ $v.name }}-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: microservice-{{ $v.name }}
+spec:
+  selector:
+    matchLabels:
+      app: microservice-{{ $v.name }}
+  template:
+    metadata:
+      labels:
+        app: microservice-{{ $v.name }}
+    spec:
+      containers:
+      - name: {{ $v.name }}
+        image: {{ $v.image }}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 4000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 4000
+            scheme: HTTP
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 4000
+            scheme: HTTP
+{{- end }}
