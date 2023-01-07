@@ -3,7 +3,6 @@ on: [push]
 jobs:
   build-images:
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,4 +27,4 @@ jobs:
           push: true
           tags: ghcr.io/schnider94/conf:user-service
           build-args: |
-            NPM_TOKEN=${{ secrets.GITHUB_TOKEN }}
+            NPM_TOKEN=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
