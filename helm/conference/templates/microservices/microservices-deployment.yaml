@@ -45,9 +45,9 @@ spec:
           - containerPort: 27017
         env:
           - name: MONGODB_REPLICA_SET_MODE
-            vale: primary
+            value: primary
           - name: MONGODB_REPLICA_SET_KEY
-            vale: replicasetkey123
+            value: replicasetkey123
           - name: MONGODB_ROOT_USER
             value: {{ $v.db.username }}
           - name: MONGODB_ROOT_PASSWORD
