@@ -14,10 +14,12 @@ spec:
   selector:
     app: microservice-{{ $v.name }}
   ports:
-    - port: {{ $v.port }}
+    - name: service
+      port: {{ $v.port }}
       targetPort: 4000
       protocol: TCP
-    - port: 27017
+    - name: database
+      port: 27017
       targetPort: 27017
       protocol: TCP
 {{- end }}

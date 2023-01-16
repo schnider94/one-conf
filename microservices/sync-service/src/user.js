@@ -16,15 +16,13 @@ const connect = function() {
 };
 
 
-exports.user = {
-    watch(executer) {
-        connect()
-            .then(connection => {
-                return Promise.resolve(connection.model('user', UserSchema));
-            })
-            .then(UserModel => {
-                UserModel.watch().on('change', executer);
-            })
-            .catch(error => console.error(error));
-    }
+exports.watch = function(executer) {
+    connect()
+        .then(connection => {
+            return Promise.resolve(connection.model('user', UserSchema));
+        })
+        .then(UserModel => {
+            UserModel.watch().on('change', executer);
+        })
+        .catch(error => console.error(error));
 }
