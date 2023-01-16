@@ -1,6 +1,6 @@
 {
   "name": "@schnider94/database",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Helper for setting up the database",
   "main": "index.js",
   "scripts": {

@@ -14,29 +14,20 @@ exports.connect = function(props) {
     let counter = 0;
 
     const connect = () => {
-        console.log(`Connect to Mongodb ${connectString} ...`)
-        counter++;
+        mongoose
+            .createConnection(connectString)
+            .asPromise()
+            .then(callback)
+            .catch(error => {
+                console.log('Error while connecting to mongodb:');
+                console.error(error);
+                counter++;
 
-        mongoose.connect(connectString, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-
-        if (counter > 50) {
-            console.error('Connection failed 50 times, exiting...');
-            exit(1);
-        }
+                setTimeout(connect, 1000);
+            });
     };
 
-    mongoose.connection.on('error', function(error) {
-        console.log(error);
-        counter++;
-
-        setTimeout(connect, 5000);
-    });
     connect();
-
-    mongoose.connection.on('open', () => callback());
 
     mongoose.Promise = global.Promise;
 }

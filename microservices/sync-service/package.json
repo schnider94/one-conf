@@ -1,7 +1,7 @@
 {
-  "name": "user-service",
+  "name": "example-service",
   "version": "1.0.0",
-  "description": "MicroService which manages application users for one-conf.",
+  "description": "MicroService which manages application example for one-conf.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,14 +18,6 @@
   "homepage": "https://github.com/schnider94/one-conf#readme",
   "dependencies": {
     "@schnider94/app": "^1.0.0",
-    "@schnider94/database": "^1.0.2",
-    "@schnider94/jwt-middleware": "^1.0.2",
-    "@schnider94/server": "^1.0.3",
-    "bcrypt": "^5.1.0",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.8.2",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "@schnider94/database": "^1.0.1"
   }
 }

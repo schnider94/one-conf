@@ -18,7 +18,7 @@ spec:
         app: microservice-{{ $v.name }}
     spec:
       imagePullSecrets:
-      - name: docker-registry-secret
+        - name: docker-registry-secret
       containers:
       - name: {{ $v.name }}
         image: {{ $v.image }}
@@ -39,11 +39,25 @@ spec:
             port: 4000
             scheme: HTTP
       - name: mongodb
-        image: mongo:4.4.18
+        image: bitnami/mongodb:4.4.15
         imagePullPolicy: IfNotPresent
         env:
-          - name: MONGO_INITDB_ROOT_USERNAME
+          - name: MONGODB_REPLICA_SET_MODE
+            vale: primary
+          - name: MONGODB_REPLICA_SET_KEY
+            vale: replicasetkey123
+          - name: MONGODB_ROOT_USER
             value: {{ $v.db.username }}
-          - name: MONGO_INITDB_ROOT_PASSWORD
+          - name: MONGODB_ROOT_PASSWORD
             value: {{ $v.db.password }}
+          - name: MONGODB_ADVERTISE_IP
+            value: 127.0.0.1
+        volumeMounts:
+          - name: mongodb-keyfile
+            mountPath: /etc/files
+      volumes:
+        - name: mongodb-keyfile
+          secret:
+            secretName: mongodb-keyfile-secret
+            defaultMode: 0600
 {{- end }}
