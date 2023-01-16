@@ -15,8 +15,7 @@ exports.connect = function(props) {
 
     const connect = () => {
         mongoose
-            .createConnection(connectString)
-            .asPromise()
+            .connect(connectString)
             .then(callback)
             .catch(error => {
                 console.log('Error while connecting to mongodb:');
@@ -26,8 +25,5 @@ exports.connect = function(props) {
                 setTimeout(connect, 1000);
             });
     };
-
     connect();
-
-    mongoose.Promise = global.Promise;
 }
