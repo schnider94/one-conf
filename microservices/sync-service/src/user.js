@@ -7,9 +7,9 @@ user.setup(UserSchema);
 const connect = function() {
     return new Promise(resolve => {
         database.connect({
-            host: process.env.DB_HOST,
-            username: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD,
+            host: process.env.USER_DB_HOST,
+            username: process.env.USER_DB_USERNAME,
+            password: process.env.USER_DB_PASSWORD,
             callback: resolve,
         });
     })
@@ -17,7 +17,7 @@ const connect = function() {
 
 
 exports.watch = function(executer) {
-    connect()
+    return connect()
         .then(connection => {
             return Promise.resolve(connection.model('user', UserSchema));
         })
