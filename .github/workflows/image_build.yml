@@ -28,3 +28,12 @@ jobs:
           tags: ghcr.io/schnider94/user_service:latest
           build-args: |
             NPM_TOKEN=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
+
+      - name: Build and push sync-service
+        uses: docker/build-push-action@v3
+        with:
+          context: ./microservices/sync-service
+          push: true
+          tags: ghcr.io/schnider94/sync_service:latest
+          build-args: |
+            NPM_TOKEN=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

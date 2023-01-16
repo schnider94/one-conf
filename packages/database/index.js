@@ -14,15 +14,22 @@ exports.connect = function(props) {
     let counter = 0;
 
     const connect = () => {
+        counter++;
+
+        if (counter > 50) {
+            console.error(`More than 50 tries when connecting to ${connectString}, abort...`);
+
+            throw new Error('Too many tries');
+        }
+
         mongoose
             .connect(connectString)
             .then(callback)
             .catch(error => {
                 console.log('Error while connecting to mongodb:');
                 console.error(error);
-                counter++;
 
-                setTimeout(connect, 1000);
+                setTimeout(connect, 5000);
             });
     };
     connect();

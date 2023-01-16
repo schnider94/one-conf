@@ -1,6 +1,9 @@
 env: private
 html: private.html
 
+syncservice:
+  image: ghcr.io/schnider94/sync_service:latest
+
 microservices:
   - name: user
     image: ghcr.io/schnider94/user_service:latest

@@ -8,7 +8,7 @@ const routes = require('./src/routes');
 
 createApp()
     .use(function(next) {
-        database.setup({
+        database.connect({
             host: process.env.DB_HOST,
             username: process.env.DB_USERNAME,
             password: process.env.DB_PASSWORD,

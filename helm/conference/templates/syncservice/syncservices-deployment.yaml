@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncservice-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: syncservice
+spec:
+  selector:
+    matchLabels:
+      app: syncservice
+  template:
+    metadata:
+      labels:
+        app: syncservice
+    spec:
+      imagePullSecrets:
+        - name: docker-registry-secret
+      containers:
+      - name: sync
+        image: {{ .Values.syncservice.image }}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: syncservice-configmap
