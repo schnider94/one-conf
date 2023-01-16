@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const UserModelDefault = require('@schnider94/models').user;
 
 const UserSchema = UserModelDefault.create({
