@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 exports.create = function(use) {
     const requestLogger = function (req, res, next) {
@@ -9,6 +10,7 @@ exports.create = function(use) {
 
     const app = express();
 
+    app.use(cors());
     app.use(requestLogger);
     app.use(bodyParser.urlencoded({ extended: false }));
 

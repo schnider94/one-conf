@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config';
 
 import App from './App.vue'
 import router from './router'
+import axiosPlugin from './plugins/axios'
 
 import './assets/main.css'
 
@@ -12,5 +13,6 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue)
+app.use(axiosPlugin)
 
 app.mount('#app')
