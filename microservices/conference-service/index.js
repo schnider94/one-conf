@@ -4,7 +4,6 @@ const jwtMiddleware = require('@schnider94/jwt-middleware');
 const server = require('@schnider94/server');
 const passport = require('passport');
 
-// ROUTES
 const routes = require('./src/routes');
 
 createApp()
@@ -23,6 +22,6 @@ createApp()
     })
     .start(
         server.create((app) => {
-            app.use('/example', passport.authenticate('jwt', { session: false }), routes);
+            app.use('/conference', passport.authenticate('jwt', { session: false }), routes);
         })
     );

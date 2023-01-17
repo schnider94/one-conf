@@ -1,6 +1,6 @@
 {
   "name": "@schnider94/models",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Model default for one-conf",
   "main": "index.js",
   "scripts": {

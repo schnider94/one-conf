@@ -1,5 +1,5 @@
 {
-  "name": "example-service",
+  "name": "sync-service",
   "version": "1.0.0",
   "description": "MicroService which manages application example for one-conf.",
   "main": "index.js",
@@ -19,6 +19,6 @@
   "dependencies": {
     "@schnider94/app": "^1.0.0",
     "@schnider94/database": "^1.0.5",
-    "@schnider94/models": "^1.0.0"
+    "@schnider94/models": "^1.0.1"
   }
 }

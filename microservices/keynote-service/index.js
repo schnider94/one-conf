@@ -23,6 +23,6 @@ createApp()
     })
     .start(
         server.create((app) => {
-            app.use('/example', passport.authenticate('jwt', { session: false }), routes);
+            app.use('/keynote', passport.authenticate('jwt', { session: false }), routes);
         })
     );

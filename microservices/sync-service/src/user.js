@@ -24,5 +24,5 @@ exports.watch = function(executer) {
         .then(UserModel => {
             UserModel.watch().on('change', executer);
         })
-        .catch(error => console.error(error));
+        .catch(error => console.error('Error starting user watcher', error));
 }
