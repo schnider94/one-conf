@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: conf-html-configmap
-data:
-{{- $file := print "files/" .Values.html }}
-{{ (.Files.Glob $file).AsConfig | indent 2 }}

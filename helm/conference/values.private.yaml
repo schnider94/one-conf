@@ -1,5 +1,7 @@
 env: private
-html: private.html
+
+app:
+  image: ghcr.io/schnider94/app:latest
 
 syncservice:
   image: ghcr.io/schnider94/sync_service:latest

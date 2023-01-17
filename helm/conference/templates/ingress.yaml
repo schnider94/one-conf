@@ -13,7 +13,7 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: conf-service
+      name: app-service
       port:
         number: 8000
   rules:

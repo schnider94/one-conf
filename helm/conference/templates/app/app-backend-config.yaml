@@ -6,5 +6,5 @@ metadata:
 spec:
   healthCheck:
     type: HTTP
-    requestPath: /
+    requestPath: /healthz
 {{ end }}
