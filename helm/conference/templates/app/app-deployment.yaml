@@ -1,3 +1,4 @@
+{{- if .Values.app }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -30,3 +31,4 @@ spec:
             path: /healthz
             port: 80
             scheme: HTTP
+{{- end }}
