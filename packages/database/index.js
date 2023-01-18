@@ -22,9 +22,15 @@ exports.connect = function(props) {
             throw new Error('Too many tries');
         }
 
+        console.log(`Connect to: ${connectString}`);
+
         mongoose
-            .connect(connectString)
-            .then(callback)
+            .createConnection(connectString)
+            .then(conn => {
+                mongoose.connection = conn;
+
+                callback(conn);
+            })
             .catch(error => {
                 console.log('Error while connecting to mongodb:');
                 console.error(error);
