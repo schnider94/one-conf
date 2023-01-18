@@ -26,6 +26,7 @@ exports.connect = function(props) {
 
         mongoose
             .createConnection(connectString)
+            .asPromise()
             .then(conn => {
                 mongoose.connection = conn;
 
