@@ -3,6 +3,7 @@
     import { useRouter, useRoute } from 'vue-router'
     import { email, required } from "@vuelidate/validators"
     import { useVuelidate } from "@vuelidate/core"
+    import { useToast } from "primevue/usetoast"
 
     import Card from 'primevue/card';
     import PrimeButton from 'primevue/button'
@@ -25,6 +26,7 @@
     const router = useRouter()
     const route = useRoute()
     const submitted = ref(false)
+    const toast = useToast()
 
     const v$ = useVuelidate(rules, state)
 
@@ -34,17 +36,26 @@
         if (!isFormValid) return
 
         authStore
-            .login(state.email, state.password)
-            .then(() => router.push(route.query.returnTo ?? '/dashboard'))
+            .register(state.email, state.password)
+            .then(() => {
+                toast.add({
+                    severity:'success',
+                    summary: 'Account created',
+                    detail:'Successfully registered, log in to use one-conf!',
+                    life: 3000
+                })
+
+                router.push({ name: 'home', query: route.query })
+            })
     }
 
-    const onClickRegister = () => router.push({ name: 'register', query: route.query })
+    const onClickLogin = () => router.push({ name: 'home', query: route.query })
 </script>
 
 <template>
     <Card :style="{ width: '400px' }">
         <template #title>
-            Login
+            Register
         </template>
         <template #content>
             <form
@@ -95,9 +106,9 @@
                 <div class="flex flex-row justify-between gap-1">
                     <PrimeButton
                         type="button"
-                        label="Register"
+                        label="Login"
                         class="p-button-help"
-                        @click="onClickRegister"
+                        @click="onClickLogin"
                     />
                     <PrimeButton
                         type="submit"

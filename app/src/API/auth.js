@@ -12,3 +12,16 @@ export const login = (email, password) => {
             return Promise.resolve(response.data)
         })
 }
+
+export const register = (email, password) => {
+    return axios
+        .post('/auth/signup', {
+            email,
+            password,
+        })
+        .then(response => {
+            console.log(response)
+
+            return Promise.resolve(response.data)
+        })
+}
