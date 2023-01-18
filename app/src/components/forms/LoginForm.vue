@@ -1,6 +1,6 @@
 <script setup>
     import { reactive, ref } from 'vue'
-    import { useRouter } from 'vue-router'
+    import { useRouter, useRoute } from 'vue-router'
     import { email, required } from "@vuelidate/validators"
     import { useVuelidate } from "@vuelidate/core"
 
@@ -23,6 +23,7 @@
 
     const authStore = useAuthStore()
     const router = useRouter()
+    const route = useRoute()
     const submitted = ref(false)
 
     const v$ = useVuelidate(rules, state)
@@ -34,7 +35,7 @@
 
         authStore
             .login(state.email, state.password)
-            .then(() => router.push('/dashboard'))
+            .then(() => router.push(route.query.returnTo ?? '/dashboard'))
     }
 </script>
 

@@ -20,7 +20,7 @@ spec:
   - http:
       paths:
 {{- range $v := .Values.microservices }}
-      - path: /{{ $v.name }}
+      - path: /api/{{ $v.name }}
         pathType: Prefix
         backend:
           service:
@@ -29,7 +29,7 @@ spec:
               number: {{ $v.port }}
     {{- if $v.extraPaths }}
       {{- range $path := $v.extraPaths }}
-      - path: /{{ $path }}
+      - path: /api/{{ $path }}
         pathType: Prefix
         backend:
           service:

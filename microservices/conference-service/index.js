@@ -22,6 +22,6 @@ createApp()
     })
     .start(
         server.create((app) => {
-            app.use('/conference', passport.authenticate('jwt', { session: false }), routes);
+            app.use('/api/conference', passport.authenticate('jwt', { session: false }), routes);
         })
     );

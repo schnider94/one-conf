@@ -6,4 +6,9 @@ export const login = (email, password) => {
             email,
             password,
         })
+        .then(response => {
+            console.log(response)
+
+            return Promise.resolve(response.data)
+        })
 }

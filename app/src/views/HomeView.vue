@@ -1,5 +1,20 @@
 <script setup>
-  import LoginForm from '@/components/forms/LoginForm.vue';
+  import { useRoute } from 'vue-router'
+  import { useToast } from "primevue/usetoast"
+
+  import LoginForm from '@/components/forms/LoginForm.vue'
+
+  const toast = useToast()
+  const route = useRoute()
+
+  if (!!route.query?.returnTo) {
+    toast.add({
+      severity:'error',
+      summary: 'Not logged in',
+      detail:'You need to be logged in to access this url, log in first.',
+      life: 3000
+    })
+  }
 </script>
 
 <template>

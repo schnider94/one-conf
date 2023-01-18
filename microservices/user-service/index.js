@@ -27,7 +27,7 @@ createApp()
     })
     .start(
         server.create((app) => {
-            app.use('/auth', authRoutes);
-            app.use('/user', passport.authenticate('jwt', { session: false }), routes);
+            app.use('/api/auth', authRoutes);
+            app.use('/api/user', passport.authenticate('jwt', { session: false }), routes);
         })
     );
