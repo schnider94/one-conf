@@ -5,6 +5,7 @@ exports.connect = function(props) {
         host,
         username,
         password,
+        single = true,
         callback,
     } = props;
 
@@ -24,20 +25,28 @@ exports.connect = function(props) {
 
         console.log(`Connect to: ${connectString}`);
 
-        mongoose
-            .createConnection(connectString)
-            .asPromise()
-            .then(conn => {
-                mongoose.connection = conn;
+        if (single) {
+            mongoose
+                .connect(connectString)
+                .then(callback)
+                .catch(error => {
+                    console.log('Error while connecting to mongodb:');
+                    console.error(error);
 
-                callback(conn);
-            })
-            .catch(error => {
-                console.log('Error while connecting to mongodb:');
-                console.error(error);
+                    setTimeout(connect, 5000);
+                });
+        } else {
+            mongoose
+                .createConnection(connectString)
+                .asPromise()
+                .then(callback)
+                .catch(error => {
+                    console.log('Error while connecting to mongodb:');
+                    console.error(error);
 
-                setTimeout(connect, 5000);
-            });
+                    setTimeout(connect, 5000);
+                });
+        }
     };
     connect();
 }

@@ -7,9 +7,11 @@ exports.start = function() {
     const conferencePromise = conference.watch(data => console.log('Conference: \n', data));
     const keynotePromise = keynote.watch(data => console.log('Keynote: \n', data));
 
-    Promise.all([
-        userPromise,
-        conferencePromise,
-        keynotePromise
-    ], () => console.log('All watchers started'));
+    Promise
+        .all([
+            userPromise,
+            conferencePromise,
+            keynotePromise
+        ])
+        .then(() => console.log('All watchers started'));
 }

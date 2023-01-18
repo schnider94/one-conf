@@ -11,6 +11,7 @@ const connect = function() {
             username: process.env.USER_DB_USERNAME,
             password: process.env.USER_DB_PASSWORD,
             callback: resolve,
+            single: false,
         });
     })
 };
