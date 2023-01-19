@@ -9,14 +9,35 @@ router.get('/', (_, res) => {
     });
 });
 
-router.post('/', async (req, res) => {
+router.get('/:id', async (_, res) => {
     try {
-        const keynote = await KeynoteModel.create(req.body)
+        const keynote = await KeynoteModel.findById(req.params.id);
 
         return res.json({
-            message: 'Successfully created keynote',
             data: keynote,
-        })
+        });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.get('/all', async (_, res) => {
+    try {
+        const keynotes = await KeynoteModel.find({});
+
+        return res.json({ data: keynotes });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.post('/', async (req, res) => {
+    try {
+        const keynote = await KeynoteModel.create(req.body);
+
+        return res.json({
+            data: keynote,
+        });
     } catch (error) {
         return res.status(500).json({ error });
     }
@@ -24,11 +45,11 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req) => {
     try {
-        await KeynoteModel.deleteOne({ _id: req.params.id })
+        await KeynoteModel.deleteOne({ _id: req.params.id });
 
         return res.json({
             message: 'Successfully deleted keynote',
-        })
+        });
     } catch (error) {
         return res.status(500).json({ error });
     }

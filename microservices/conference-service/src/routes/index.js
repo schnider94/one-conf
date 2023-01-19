@@ -9,12 +9,11 @@ router.get('/', (_, res) => {
     });
 });
 
-router.post('/', async (req, res) => {
+router.get('/:id', async (_, res) => {
     try {
-        const conference = await ConferenceModel.create(req.body)
+        const conference = await ConferenceModel.findById(req.params.id);
 
         return res.json({
-            message: 'Successfully created conference',
             data: conference,
         })
     } catch (error) {
@@ -22,13 +21,35 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.get('/all', async (_, res) => {
+    try {
+        const conferences = await ConferenceModel.find({});
+
+        return res.json({ data: conferences });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.post('/', async (req, res) => {
+    try {
+        const conference = await ConferenceModel.create(req.body);
+
+        return res.json({
+            data: conference,
+        });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
 router.delete('/:id', async (req) => {
     try {
-        await ConferenceModel.deleteOne({ _id: req.params.id })
+        await ConferenceModel.deleteOne({ _id: req.params.id });
 
         return res.json({
             message: 'Successfully deleted conference',
-        })
+        });
     } catch (error) {
         return res.status(500).json({ error });
     }
