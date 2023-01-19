@@ -26,7 +26,7 @@ const msgToDbGenerator = function(updateDb) {
 const dbToMsgGenerator = function(publishMsg) {
     return data => {
         console.log(`Change from db:`, data);
-        const uniqueId = data.__id._data;
+        const uniqueId = data._id._data;
 
         sentBySelf[uniqueId] = true;
 
