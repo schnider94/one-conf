@@ -34,6 +34,47 @@ const getKeynoteModel = function() {
     return mongoose.connection.model('keynote', KeynoteSchema);
 }
 
+const insertUser = doc => getUserModel().create(doc);
+const insertConference = doc => getConferenceModel().create(doc);
+const insertKeynote = doc => getKeynoteModel().create(doc);
+
+const deleteUser = _id => getUserModel().deleteOne({ _id });
+const deleteConference = _id => getConferenceModel().deleteOne({ _id });
+const deleteKeynote = _id => getKeynoteModel().deleteOne({ _id });
+
+const _insert = function(collection, doc) {
+    const inserts = {
+        users: insertUser,
+        conferences: insertConference,
+        keynotes: insertKeynote,
+    }
+
+    if (inserts[collection]) inserts[collection](doc);
+    else console.error(`Insert for collection "${collection}" does not exist`);
+}
+
+const _delete = function(collection, doc) {
+    const deletes = {
+        users: deleteUser,
+        conferences: deleteConference,
+        keynotes: deleteKeynote,
+    }
+
+    if (deletes[collection]) deletes[collection](doc);
+    else console.error(`Delete for collection "${collection}" does not exist`);
+}
+
+
+const updateDB = function(data) {
+    const types = {
+        insert: _insert,
+        delete: _delete,
+    };
+
+    if (types[data.type]) types[data.type](data.collection, data.doc);
+    else console.error(`Type does not exist: ${data.type}`);
+}
+
 
 exports.connect = function() {
     return connect()
@@ -42,9 +83,7 @@ exports.connect = function() {
                 subscribe(fn) {
                     mongoose.connection.watch().on('change', fn);
                 },
-                publish(data) {
-                    console.log('Write to DB:', data);
-                },
+                publish: updateDB,
             };
         });
 }
