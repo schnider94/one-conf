@@ -8,3 +8,7 @@ data:
   {{ $v.name | upper }}_DB_USERNAME: {{ $v.db.username }}
   {{ $v.name | upper }}_DB_PASSWORD: {{ $v.db.password }}
   {{- end }}
+  RABBIT_USER: {{ .Values.rabbitmq.auth.username }}
+  RABBIT_PASSWORD: {{ .Values.rabbitmq.auth.password }}
+  RABBIT_HOST: {{ .Values.rabbitmq.host }}
+  RABBIT_EXCHANGE: {{ .Values.rabbitmq.exchange_name }}

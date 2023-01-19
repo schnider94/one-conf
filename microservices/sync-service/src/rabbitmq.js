@@ -41,5 +41,6 @@ exports.connect = function() {
                         },
                     };
                 })
-        });
+        })
+        .catch(error => console.error('Error connection to RabbitMQ: ', error));
 }
