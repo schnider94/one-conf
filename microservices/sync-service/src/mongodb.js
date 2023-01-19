@@ -40,13 +40,7 @@ exports.connect = function() {
         .then(() => {
             return {
                 subscribe(fn) {
-                    console.log('Start watching!');
-
-                    mongoose.connection.watch().on('change', data => {
-                        console.log('watch', data);
-
-                        fn(data);
-                    });
+                    mongoose.connection.watch().on('change', fn);
                 },
                 publish(data) {
                     console.log('Write to DB:', data);
