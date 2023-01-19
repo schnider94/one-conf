@@ -40,11 +40,19 @@ exports.connect = function() {
         .then(() => {
             return {
                 subscribe(fn) {
+                    console.log('Start watching!');
+
                     mongoose.connection.watch(data => {
                         console.log('watch', data);
 
                         fn(data);
                     });
+
+                    getUserModel().watch(data => {
+                        console.log('watch user', data);
+
+                        fn(data);
+                    })
                 },
                 publish(data) {
                     console.log('Write to DB:', data);
