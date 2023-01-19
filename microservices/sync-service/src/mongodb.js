@@ -61,9 +61,9 @@ const insertUser = doc => getUserModel().create(doc);
 const insertConference = doc => getConferenceModel().create(doc);
 const insertKeynote = doc => getKeynoteModel().create(doc);
 
-const deleteUser = _id => getUserModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
-const deleteConference = _id => getConferenceModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
-const deleteKeynote = _id => getKeynoteModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
+const deleteUser = ({ _id }) => getUserModel().deleteOne({ _id });
+const deleteConference = ({ _id }) => getConferenceModel().deleteOne({ _id });
+const deleteKeynote = ({ _id }) => getKeynoteModel().deleteOne({ _id });
 
 const _insert = function(collection, doc) {
     const inserts = {
