@@ -1,5 +1,8 @@
 env: private
 
+rabbitmq:
+  enabled: false
+
 app:
   image: ghcr.io/schnider94/app:latest
 

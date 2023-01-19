@@ -1,2 +1,32 @@
 env: public
-html: public.html
+
+rabbitmq:
+  enabled: true
+
+app:
+  image: ghcr.io/schnider94/app:latest
+
+syncservice:
+  image: ghcr.io/schnider94/sync_service:latest
+
+microservices:
+  - name: user
+    image: ghcr.io/schnider94/user_service:latest
+    port: 4001
+    db:
+      password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
+      username: root
+    extraPaths:
+      - auth
+  - name: conference
+    image: ghcr.io/schnider94/conference_service:latest
+    port: 4002
+    db:
+      password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
+      username: root
+  - name: keynote
+    image: ghcr.io/schnider94/keynote_service:latest
+    port: 4003
+    db:
+      password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
+      username: root

@@ -19,6 +19,7 @@
   "dependencies": {
     "@schnider94/app": "^1.0.0",
     "@schnider94/database": "^1.0.9",
-    "@schnider94/models": "^1.0.1"
+    "@schnider94/models": "^1.0.1",
+    "amqplib": "^0.10.3"
   }
 }
