@@ -19,7 +19,7 @@ const msgToDbGenerator = function(updateDb) {
             return;
         }
 
-        updateDb();
+        updateDb(data);
     }
 }
 
