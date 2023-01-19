@@ -13,22 +13,35 @@ const connect = function() {
     });
 }
 
-const getUserModel = function() {
-    const UserSchema = user.create();
+let UserModel;
+let ConferenceModel;
+let KeynoteModel;
 
-    return mongoose.connection.model('user', UserSchema);
+const getUserModel = function() {
+    if (UserModel) return UserModel;
+
+    const UserSchema = user.create();
+    UserModel = mongoose.connection.model('user', UserSchema);
+
+    return UserModel;
 }
 
 const getConferenceModel = function() {
-    const ConferenceSchema = conference.create();
+    if (ConferenceModel) return ConferenceModel;
 
-    return mongoose.connection.model('conference', ConferenceSchema);
+    const ConferenceSchema = conference.create();
+    ConferenceModel = mongoose.connection.model('conference', ConferenceSchema);
+
+    return ConferenceModel;
 }
 
 const getKeynoteModel = function() {
-    const KeynoteSchema = keynote.create();
+    if (KeynoteModel) return KeynoteModel;
 
-    return mongoose.connection.model('keynote', KeynoteSchema);
+    const KeynoteSchema = keynote.create();
+    KeynoteModel = mongoose.connection.model('keynote', KeynoteSchema);
+
+    return KeynoteModel;
 }
 
 const insertBySelf = {
