@@ -25,6 +25,10 @@ const create = function(schema) {
             type: mongoose.Types.ObjectId,
             required: true
         },
+        name: {
+            type: String,
+            required: true,
+        },
         ...schema,
     });
 };
