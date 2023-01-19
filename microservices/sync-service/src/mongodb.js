@@ -109,19 +109,28 @@ exports.connect = function() {
             return {
                 subscribe(fn) {
                     mongoose.connection.watch().on('change', data => {
-                        const id = data.fullDocument._id;
-                        const coll = data.ns.coll;
+                        console.log(data);
 
-                        // Make sure we don't catch our own insert
-                        if (data.operationType === 'insert' && insertBySelf[coll][id]) {
-                            delete insertBySelf[coll][id];
-                            return;
+                        if (data.operationType === 'insert') {
+                            const id = data.fullDocument._id;
+                            const coll = data.ns.coll;
+
+                            // Make sure we don't catch our own insert
+                            if (insertBySelf[coll][id]) {
+                                delete insertBySelf[coll][id];
+                                return;
+                            }
                         }
 
-                        // Make sure we don't catch our own delete
-                        if (data.operationType === 'delete' && deleteBySelf[coll][id]) {
-                            delete deleteBySelf[coll][id];
-                            return;
+                        if (data.operationType === 'delete') {
+                            const id = data.fullDocument._id;
+                            const coll = data.ns.coll;
+
+                            // Make sure we don't catch our own delete
+                            if (deleteBySelf[coll][id]) {
+                                delete deleteBySelf[coll][id];
+                                return;
+                            }
                         }
 
                         fn(data);

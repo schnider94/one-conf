@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        await ConferenceModel.remove({ _id: req.params.id });
+        await ConferenceModel.deleteOne({ _id: req.params.id });
 
         return res.json({
             message: 'Successfully deleted conference',

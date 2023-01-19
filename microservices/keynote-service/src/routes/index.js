@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        await KeynoteModel.remove({ _id: req.params.id });
+        await KeynoteModel.deleteOne({ _id: req.params.id });
 
         return res.json({
             message: 'Successfully deleted keynote',
