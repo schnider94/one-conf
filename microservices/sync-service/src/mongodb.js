@@ -61,9 +61,9 @@ const insertUser = doc => getUserModel().create(doc);
 const insertConference = doc => getConferenceModel().create(doc);
 const insertKeynote = doc => getKeynoteModel().create(doc);
 
-const deleteUser = _id => getUserModel().deleteOne({ _id });
-const deleteConference = _id => getConferenceModel().deleteOne({ _id });
-const deleteKeynote = _id => getKeynoteModel().deleteOne({ _id });
+const deleteUser = _id => getUserModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
+const deleteConference = _id => getConferenceModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
+const deleteKeynote = _id => getKeynoteModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
 
 const _insert = function(collection, doc) {
     const inserts = {
@@ -104,7 +104,7 @@ const updateDB = function(data) {
 
 const subscribe = function(fn) {
     mongoose.connection.watch().on('change', data => {
-        console.log(data);
+        console.log('Change from db:', data);
 
         if (data.operationType === 'insert') {
             const id = data.fullDocument._id;
@@ -113,6 +113,7 @@ const subscribe = function(fn) {
             // Make sure we don't catch our own insert
             if (insertBySelf[coll][id]) {
                 delete insertBySelf[coll][id];
+                console.log('Insert from self, skip…');
                 return;
             }
 
@@ -132,6 +133,7 @@ const subscribe = function(fn) {
             // Make sure we don't catch our own delete
             if (deleteBySelf[coll][id]) {
                 delete deleteBySelf[coll][id];
+                console.log('Delete from self, skip…');
                 return;
             }
 
