@@ -31,8 +31,17 @@ const getKeynoteModel = function() {
     return mongoose.connection.model('keynote', KeynoteSchema);
 }
 
-const insertBySelf = {};
-const deleteBySelf = {};
+const insertBySelf = {
+    users: {},
+    conferences: {},
+    keynotes: {},
+};
+
+const deleteBySelf = {
+    users: {},
+    conferences: {},
+    keynotes: {},
+};
 
 
 const insertUser = doc => getUserModel().create(doc);
@@ -50,7 +59,7 @@ const _insert = function(collection, doc) {
         keynotes: insertKeynote,
     }
 
-    insertBySelf[collection][`${doc._id}`] = true;
+    insertBySelf[collection][doc._id] = true;
 
     if (inserts[collection]) inserts[collection](doc);
     else console.error(`Insert for collection "${collection}" does not exist`);
@@ -63,7 +72,7 @@ const _delete = function(collection, doc) {
         keynotes: deleteKeynote,
     }
 
-    deleteBySelf[collection][`${doc._id}`] = true;
+    deleteBySelf[collection][doc._id] = true;
 
     if (deletes[collection]) deletes[collection](doc);
     else console.error(`Delete for collection "${collection}" does not exist`);
