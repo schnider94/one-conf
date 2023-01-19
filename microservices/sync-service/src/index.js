@@ -23,16 +23,10 @@ const msgToDbGenerator = function(updateDb) {
 const dbToMsgGenerator = function(publishMsg) {
     return data => {
         console.log(`Change from db:`, data);
-        const uniqueId = data._id._data;
 
-        sentBySelf[uniqueId] = true;
+        sentBySelf[data.id] = true;
 
-        publishMsg({
-            id: uniqueId,
-            doc: data.fullDocument,
-            type: data.operationType,
-            collection: data.ns.coll,
-        });
+        publishMsg(data);
     }
 }
 

@@ -120,6 +120,13 @@ exports.connect = function() {
                                 delete insertBySelf[coll][id];
                                 return;
                             }
+
+                            fn({
+                                id: data._id._data,
+                                doc: data.fullDocument,
+                                type: data.operationType,
+                                collection: coll,
+                            });
                         }
 
                         if (data.operationType === 'delete') {
@@ -131,6 +138,15 @@ exports.connect = function() {
                                 delete deleteBySelf[coll][id];
                                 return;
                             }
+
+                            fn({
+                                id: data._id._data,
+                                doc: {
+                                    _id: id,
+                                },
+                                type: data.operationType,
+                                collection: data.ns.coll,
+                            });
                         }
 
                         fn(data);
