@@ -102,56 +102,60 @@ const updateDB = function(data) {
     else console.error(`Type does not exist: ${data.type}`);
 }
 
+const subscribe = function(fn) {
+    mongoose.connection.watch().on('change', data => {
+        console.log(data);
+
+        if (data.operationType === 'insert') {
+            const id = data.fullDocument._id;
+            const coll = data.ns.coll;
+
+            // Make sure we don't catch our own insert
+            if (insertBySelf[coll][id]) {
+                delete insertBySelf[coll][id];
+                return;
+            }
+
+            fn({
+                id: data._id._data,
+                doc: data.fullDocument,
+                type: data.operationType,
+                collection: coll,
+            });
+            return;
+        }
+
+        if (data.operationType === 'delete') {
+            const id = data.documentKey._id.toString();
+            const coll = data.ns.coll;
+
+            // Make sure we don't catch our own delete
+            if (deleteBySelf[coll][id]) {
+                delete deleteBySelf[coll][id];
+                return;
+            }
+
+            fn({
+                id: data._id._data,
+                doc: {
+                    _id: id,
+                },
+                type: data.operationType,
+                collection: data.ns.coll,
+            });
+            return;
+        }
+
+        fn(data);
+    });
+}
+
 
 exports.connect = function() {
     return connect()
         .then(() => {
             return {
-                subscribe(fn) {
-                    mongoose.connection.watch().on('change', data => {
-                        console.log(data);
-
-                        if (data.operationType === 'insert') {
-                            const id = data.fullDocument._id;
-                            const coll = data.ns.coll;
-
-                            // Make sure we don't catch our own insert
-                            if (insertBySelf[coll][id]) {
-                                delete insertBySelf[coll][id];
-                                return;
-                            }
-
-                            fn({
-                                id: data._id._data,
-                                doc: data.fullDocument,
-                                type: data.operationType,
-                                collection: coll,
-                            });
-                        }
-
-                        if (data.operationType === 'delete') {
-                            const id = data.documentKey._id.toString();
-                            const coll = data.ns.coll;
-
-                            // Make sure we don't catch our own delete
-                            if (deleteBySelf[coll][id]) {
-                                delete deleteBySelf[coll][id];
-                                return;
-                            }
-
-                            fn({
-                                id: data._id._data,
-                                doc: {
-                                    _id: id,
-                                },
-                                type: data.operationType,
-                                collection: data.ns.coll,
-                            });
-                        }
-
-                        fn(data);
-                    });
-                },
+                subscribe,
                 publish: updateDB,
             };
         });
