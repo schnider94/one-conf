@@ -15,24 +15,25 @@ const connect = function() {
 
 const getUserModel = function() {
     const UserSchema = user.create();
-    user.setup(UserSchema);
 
     return mongoose.connection.model('user', UserSchema);
 }
 
 const getConferenceModel = function() {
     const ConferenceSchema = conference.create();
-    conference.setup(ConferenceSchema);
 
     return mongoose.connection.model('conference', ConferenceSchema);
 }
 
 const getKeynoteModel = function() {
     const KeynoteSchema = keynote.create();
-    keynote.setup(KeynoteSchema);
 
     return mongoose.connection.model('keynote', KeynoteSchema);
 }
+
+const insertBySelf = {};
+const deleteBySelf = {};
+
 
 const insertUser = doc => getUserModel().create(doc);
 const insertConference = doc => getConferenceModel().create(doc);
@@ -49,6 +50,8 @@ const _insert = function(collection, doc) {
         keynotes: insertKeynote,
     }
 
+    insertBySelf[collection][`${doc._id}`] = true;
+
     if (inserts[collection]) inserts[collection](doc);
     else console.error(`Insert for collection "${collection}" does not exist`);
 }
@@ -59,6 +62,8 @@ const _delete = function(collection, doc) {
         conferences: deleteConference,
         keynotes: deleteKeynote,
     }
+
+    deleteBySelf[collection][`${doc._id}`] = true;
 
     if (deletes[collection]) deletes[collection](doc);
     else console.error(`Delete for collection "${collection}" does not exist`);
@@ -81,7 +86,24 @@ exports.connect = function() {
         .then(() => {
             return {
                 subscribe(fn) {
-                    mongoose.connection.watch().on('change', fn);
+                    mongoose.connection.watch().on('change', data => {
+                        const id = data.fullDocument._id;
+                        const coll = data.ns.coll;
+
+                        // Make sure we don't catch our own insert
+                        if (data.operationType === 'insert' && insertBySelf[coll][id]) {
+                            delete insertBySelf[coll][id];
+                            return;
+                        }
+
+                        // Make sure we don't catch our own delete
+                        if (data.operationType === 'delete' && deleteBySelf[coll][id]) {
+                            delete deleteBySelf[coll][id];
+                            return;
+                        }
+
+                        fn(data);
+                    });
                 },
                 publish: updateDB,
             };
