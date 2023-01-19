@@ -50,5 +50,5 @@ exports.start = function() {
             mongodb.subscribe(dbToMsg);
         })
         .then(() => console.log('All services started'))
-        .catch(error => console.error('Errors startgin listeners:', error));
+        .catch(error => console.error('Errors starting listeners:', error));
 }

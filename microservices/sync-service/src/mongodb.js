@@ -1,6 +1,6 @@
+const mongoose = require('mongoose');
 const { conference, keynote, user } = require('@schnider94/models');
 const database = require('@schnider94/database');
-const mongoose = require('mongoose');
 
 const connect = function() {
     return new Promise(resolve => {
@@ -40,9 +40,11 @@ exports.connect = function() {
         .then(() => {
             return {
                 subscribe(fn) {
-                    getUserModel().watch(fn);
-                    getConferenceModel().watch(fn);
-                    getKeynoteModel().watch(fn);
+                    mongoose.connection.watch(data => {
+                        console.log('watch', data);
+
+                        fn(data);
+                    });
                 },
                 publish(data) {
                     console.log('Write to DB:', data);
