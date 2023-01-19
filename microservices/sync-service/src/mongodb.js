@@ -123,7 +123,7 @@ exports.connect = function() {
                         }
 
                         if (data.operationType === 'delete') {
-                            const id = data.fullDocument._id;
+                            const id = data.documentKey._id.toString();
                             const coll = data.ns.coll;
 
                             // Make sure we don't catch our own delete

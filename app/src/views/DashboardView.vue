@@ -1,4 +1,7 @@
 <script setup>
+  import { all } from '@/API/conferences';
+
+  all()
 </script>
 
 <template>
