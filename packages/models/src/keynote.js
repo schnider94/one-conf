@@ -21,6 +21,10 @@ const create = function(schema) {
             type: [mongoose.Types.ObjectId],
             required: true
         },
+        conference: {
+            type: mongoose.Types.ObjectId,
+            required: true
+        },
         ...schema,
     });
 };
