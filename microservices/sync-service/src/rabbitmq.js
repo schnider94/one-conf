@@ -23,7 +23,7 @@ exports.connect = function() {
                 .then(queue => {
                     return {
                         publish(message) {
-                            const buffer = new Buffer(JSON.stringify({ message }));
+                            const buffer = new Buffer(JSON.stringify(message));
     
                             channel.publish(exchange, '', buffer);
                         },

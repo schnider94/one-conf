@@ -4,42 +4,51 @@ const user = require('./user');
 const conference = require('./conference');
 const keynote = require('./keynote');
 
-const msgToDbGenerator = function(updateDb) {
-    return data => {
-        console.log(`Change from msq queue: ${data}`);
+const sentBySelf = {};
 
-        updateDb(JSON.parse(data));
+const msgToDbGenerator = function(updateDb) {
+    return msg => {
+        const data = JSON.parse(msg);
+
+        console.log(`Change from msq queue:`, data);
+
+        if (sentBySelf[data.id]) {
+            delete sentBySelf[data.id];
+            console.log('Sent by self, ignore…');
+
+            return;
+        }
+
+        updateDb();
     }
 }
-
 
 const dbToMsgGenerator = function(publishMsg) {
     return data => {
-        console.log(`Change from db: ${data}`);
+        console.log(`Change from db:`, data);
+        const uniqueId = data.__id._data;
 
-        publishMsg(data);
+        sentBySelf[uniqueId] = true;
+
+        publishMsg({
+            id: uniqueId,
+            doc: data.fullDocument,
+            type: data.operationType,
+            collection: data.ns.coll,
+        });
     }
 }
 
-const updateDb = function({ message }) {
-    switch (message.ns.coll) {
+const updateDb = function(data) {
+    switch (data.collection) {
         case 'users':
-            user.receive({
-                doc: message.fullDocumentm,
-                operationType: message.type
-            });
+            user.receive(data);
             break;
         case 'keynotes':
-            user.receive({
-                doc: message.fullDocumentm,
-                operationType: message.type
-            });
+            keynote.receive(data);
             break;
         case 'conferences':
-            user.receive({
-                doc: message.fullDocumentm,
-                operationType: message.type
-            });
+            conference.receive(data);
             break;
         default:
             break;
