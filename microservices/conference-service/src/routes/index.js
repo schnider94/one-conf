@@ -9,7 +9,7 @@ router.get('/', (_, res) => {
     });
 });
 
-router.get('/:id', async (_, res) => {
+router.get('/:id', async (req, res) => {
     try {
         const conference = await ConferenceModel.findById(req.params.id);
 
@@ -43,9 +43,9 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req) => {
+router.delete('/:id', async (req, res) => {
     try {
-        await ConferenceModel.deleteOne({ _id: req.params.id });
+        await ConferenceModel.remove({ _id: req.params.id });
 
         return res.json({
             message: 'Successfully deleted conference',
