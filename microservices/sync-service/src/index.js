@@ -1,8 +1,5 @@
 const rabbitmq = require('./rabbitmq');
-
-const user = require('./user');
-const conference = require('./conference');
-const keynote = require('./keynote');
+const mongodb = require('./mongodb');
 
 const sentBySelf = {};
 
@@ -39,40 +36,19 @@ const dbToMsgGenerator = function(publishMsg) {
     }
 }
 
-const updateDb = function(data) {
-    switch (data.collection) {
-        case 'users':
-            user.receive(data);
-            break;
-        case 'keynotes':
-            keynote.receive(data);
-            break;
-        case 'conferences':
-            conference.receive(data);
-            break;
-        default:
-            break;
-    }
-};
-
 exports.start = function() {
-    rabbitmq
-        .connect()
-        .then(({ publish, subscribe }) => {
-            const dbToMsg = dbToMsgGenerator(publish);
-            const msgToDb = msgToDbGenerator(updateDb);
+    const dbPromise = mongodb.connect();
+    const rabbitPromise = rabbitmq.connect();
 
-            const userPromise = user.watch(dbToMsg);
-            const conferencePromise = conference.watch(dbToMsg);
-            const keynotePromise = keynote.watch(dbToMsg);
-            subscribe(msgToDb);
+    Promise
+        .all([dbPromise, rabbitPromise])
+        .then(([mongodb, rabbitmq]) => {
+            const dbToMsg = dbToMsgGenerator(rabbitmq.publish);
+            const msgToDb = msgToDbGenerator(mongodb.publish);
 
-            return Promise
-                .all([
-                    userPromise,
-                    conferencePromise,
-                    keynotePromise
-                ]); 
+            rabbitmq.subscribe(msgToDb);
+            mongodb.subscribe(dbToMsg);
         })
-        .then(() => console.log('All services started')); 
+        .then(() => console.log('All services started'))
+        .catch(error => console.error('Errors startgin listeners:', error));
 }

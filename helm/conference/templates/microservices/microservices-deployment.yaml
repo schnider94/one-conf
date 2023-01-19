@@ -38,28 +38,4 @@ spec:
             path: /healthz
             port: 4000
             scheme: HTTP
-      - name: mongodb
-        image: bitnami/mongodb:4.4.15
-        imagePullPolicy: IfNotPresent
-        ports:
-          - containerPort: 27017
-        env:
-          - name: MONGODB_REPLICA_SET_MODE
-            value: primary
-          - name: MONGODB_REPLICA_SET_KEY
-            value: replicasetkey123
-          - name: MONGODB_ROOT_USER
-            value: {{ $v.db.username }}
-          - name: MONGODB_ROOT_PASSWORD
-            value: {{ $v.db.password }}
-          # - name: MONGODB_ADVERTISE_IP
-          #   value: 127.0.0.1
-        volumeMounts:
-          - name: mongodb-keyfile
-            mountPath: /etc/files
-      volumes:
-        - name: mongodb-keyfile
-          secret:
-            secretName: mongodb-keyfile-secret
-            defaultMode: 0600
 {{- end }}

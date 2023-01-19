@@ -1,5 +1,10 @@
 env: public
 
+database:
+  host: database-service
+  username: root
+  password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
+
 rabbitmq:
   enabled: false
   host: "34.118.88.206"

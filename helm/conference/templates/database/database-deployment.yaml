@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: database-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: database
+spec:
+  serviceName: {{ .Values.database.host }}
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - name: mongodb
+        image: bitnami/mongodb:4.4.15
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 27017
+        env:
+          - name: MONGODB_REPLICA_SET_MODE
+            value: primary
+          - name: MONGODB_REPLICA_SET_KEY
+            value: replicasetkey123
+          - name: MONGODB_ROOT_USER
+            value: {{ .Values.database.username }}
+          - name: MONGODB_ROOT_PASSWORD
+            value: {{ .Values.database.password }}
+        volumeMounts:
+          - name: mongodb-keyfile
+            mountPath: /etc/files
+      volumes:
+        - name: mongodb-keyfile
+          secret:
+            secretName: mongodb-keyfile-secret
+            defaultMode: 0600

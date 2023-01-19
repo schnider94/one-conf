@@ -6,9 +6,9 @@ kind: ConfigMap
 metadata:
   name: microservice-{{ $v.name }}-configmap
 data:
-  DB_HOST: 127.0.0.1:27017/?replicaSet=replicaset&authMechanism=DEFAULT&directConnection=true
-  DB_USERNAME: {{ $v.db.username }}
-  DB_PASSWORD: {{ $v.db.password }}
+  DB_HOST: {{ $.Values.database.host }}:27017/?replicaSet=replicaset&authMechanism=DEFAULT&directConnection=true
+  DB_USERNAME: {{ $.Values.database.username }}
+  DB_PASSWORD: {{ $.Values.database.password }}
   # TODO: Make a secret
   JWT_SECRET: A?D(G+KbPeShVmYq3s6v9y$B&E)H@McQfTjWnZr4u7w!z%C*F-JaNdRgUkXp2s5v
 {{- end }}
