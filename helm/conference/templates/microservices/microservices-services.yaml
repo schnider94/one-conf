@@ -9,6 +9,7 @@ metadata:
 {{- if eq $.Values.env "public" }}
   annotations:
     cloud.google.com/backend-config: '{"default": "microservices-backendconfig"}'
+    cloud.google.com/neg: '{"ingress": true}'
 {{- end }}
 spec:
   selector:

@@ -31,8 +31,6 @@ exports.connect = function() {
                             const consumer = msg => {
                                 const message = msg.content.toString();
 
-                                console.log(`Received: ${message}`);
-
                                 fn(message);
                                 channel.ack(msg);
                             };

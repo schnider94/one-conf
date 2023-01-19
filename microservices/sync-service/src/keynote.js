@@ -27,3 +27,7 @@ exports.watch = function(executer) {
         })
         .catch(error => console.error('Error starting keynote watcher', error));
 }
+
+exports.receive = function(msg) {
+    console.log('Update keynotes:', msg);
+}

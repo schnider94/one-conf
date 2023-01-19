@@ -3,12 +3,12 @@ kind: ConfigMap
 metadata:
   name: syncservice-configmap
 data:
+  RABBIT_USER: {{ .Values.rabbitmq.auth.username }}
+  RABBIT_PASSWORD: {{ .Values.rabbitmq.auth.password }}
+  RABBIT_HOST: {{ .Values.rabbitmq.host }}
+  RABBIT_EXCHANGE: {{ .Values.rabbitmq.exchange_name }}
   {{- range $v := .Values.microservices }}
   {{ $v.name | upper }}_DB_HOST: microservice-{{ $v.name }}-service:27017/?replicaSet=replicaset&authMechanism=DEFAULT&directConnection=true
   {{ $v.name | upper }}_DB_USERNAME: {{ $v.db.username }}
   {{ $v.name | upper }}_DB_PASSWORD: {{ $v.db.password }}
   {{- end }}
-  RABBIT_USER: {{ .Values.rabbitmq.auth.username }}
-  RABBIT_PASSWORD: {{ .Values.rabbitmq.auth.password }}
-  RABBIT_HOST: {{ .Values.rabbitmq.host }}
-  RABBIT_EXCHANGE: {{ .Values.rabbitmq.exchange_name }}

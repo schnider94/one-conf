@@ -29,5 +29,5 @@ exports.watch = function(executer) {
 }
 
 exports.receive = function(msg) {
-    console.log('Received message:', msg);
+    console.log('Update users:', msg);
 }

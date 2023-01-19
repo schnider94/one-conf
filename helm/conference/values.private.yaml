@@ -2,11 +2,6 @@ env: private
 
 rabbitmq:
   enabled: false
-  host: 34.117.87.109:5672
-  exchange_name: sync
-  auth:
-    password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
-    username: root
 
 app:
   image: ghcr.io/schnider94/app:latest

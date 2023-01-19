@@ -1,1 +1,12 @@
 env: public
+
+rabbitmq:
+  enabled: false
+  host: "34.118.88.206"
+  exchange_name: sync
+  service:
+    type: LoadBalancer
+  auth:
+    username: root
+    password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
+    erlangCookie: secretcookie

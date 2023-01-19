@@ -39,19 +39,3 @@ spec:
       {{- end }}
     {{- end }}
 {{- end }}
-{{- if eq .Values.env "public" }}
-      - path: /rabbitmq/amqp
-        pathType: Prefix
-        backend:
-          service:
-            name: conference-rabbitmq
-            port:
-              number: 5672
-      - path: /rabbitmq/stats
-        pathType: Prefix
-        backend:
-          service:
-            name: conference-rabbitmq
-            port:
-              number: 15672
-{{- end }}
