@@ -64,7 +64,10 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const conference = await ConferenceModel.create(req.body);
+        const conference = await ConferenceModel.create({
+            ...req.body,
+            owner: req.user._id
+        });
 
         return res.json({
             data: conference,
