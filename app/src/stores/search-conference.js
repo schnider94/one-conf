@@ -1,4 +1,4 @@
-import { ref, watch, reference } from 'vue'
+import { ref, watch, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import debounce from 'lodash.debounce'
@@ -8,7 +8,7 @@ import { search as confSearch } from '@/API/conferences'
 export const useSearchConferenceStore = defineStore('search-conference', () => {
   const search = ref('')
   const page = ref(0)
-  const items = reference([])
+  const items = reactive([])
 
   const router = useRouter()
 

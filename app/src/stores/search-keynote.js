@@ -1,4 +1,4 @@
-import { ref, watch, reference } from 'vue'
+import { ref, watch, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import debounce from 'lodash.debounce'
@@ -8,7 +8,7 @@ import { search as keySearch } from '@/API/keynotes'
 export const useSearchKeynoteStore = defineStore('search-keynote', () => {
   const search = ref('')
   const page = ref(0)
-  const items = reference([])
+  const items = reactive([])
 
   const router = useRouter()
 
