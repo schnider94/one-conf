@@ -29,6 +29,10 @@ const create = function(schema) {
             type: String,
             required: true,
         },
+        description: {
+            type: String,
+            require: true,
+        },
         ...schema,
     });
 };

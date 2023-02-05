@@ -49,3 +49,14 @@ export const search = function({ page, search }) {
             return data.data;
         });
 }
+
+
+export const create = function(props) {
+    return axios
+        .post('/conference', props)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data;
+        });
+}

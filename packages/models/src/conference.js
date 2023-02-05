@@ -25,6 +25,10 @@ const create = function(schema) {
             type: String,
             require: true,
         },
+        description: {
+            type: String,
+            require: true,
+        },
         ...schema,
     });
 };
