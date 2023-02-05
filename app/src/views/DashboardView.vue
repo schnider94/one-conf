@@ -30,6 +30,10 @@
     const onAddConference = () => {
         router.push('/conference/add');
     }
+
+    const onClickConf = id => {
+        router.push(`/conference/${id}`);
+    }
 </script>
 
 <template>

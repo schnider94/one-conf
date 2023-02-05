@@ -57,6 +57,28 @@ export const create = function(props) {
         .then(({ data }) => {
             console.log(data);
 
-            return data;
+            return data.data;
+        });
+}
+
+
+export const attend = function(props) {
+    return axios
+        .put(`/conference/${props.id}/attendance`)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
+        });
+}
+
+
+export const unattend = function(props) {
+    return axios
+        .delete(`/conference/${props.id}/attendance`)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
         });
 }

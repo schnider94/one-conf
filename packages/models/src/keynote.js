@@ -33,6 +33,10 @@ const create = function(schema) {
             type: String,
             require: true,
         },
+        attendees: {
+            type: [mongoose.Types.ObjectId],
+            default: []
+        },
         ...schema,
     });
 };

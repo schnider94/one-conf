@@ -1,6 +1,5 @@
 <script setup>
     import Card from 'primevue/card';
-    import Button from 'primevue/button';
 
     defineProps({
         keynote: {
@@ -19,10 +18,7 @@
             {{ keynote.location }}
         </template>
         <template #content>
-            <p>Keynote</p>
-        </template>
-        <template #footer>
-            <Button icon="pi pi-check" label="Going"></Button>
+            <p>{{ keynote.description }}</p>
         </template>
     </Card>
 </template>

@@ -17,7 +17,7 @@
 
 <template>
     <main class="flex flex-column w-screen h-screen">
-    <NavigationBar :title="title" />
+        <NavigationBar :title="title" />
         <div class="w-full h-full p-3 flex flex-column">
             <div
                 v-if="isLoading"

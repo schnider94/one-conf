@@ -53,7 +53,13 @@ router.get('/conference/:id', async (req, res) => {
 router.get('/mine', async (req, res) => {
     try {
         const keynotes = await KeynoteModel
-            .find({ speakers: req.user._id }).exec();
+            .find({ $or: 
+                [
+                    { speakers: req.user._id },
+                    { attendees: req.user._id }
+                ]
+            })
+            .exec();
 
         return res.json({ data: keynotes });
     } catch (error) {
@@ -80,6 +86,44 @@ router.post('/', async (req, res) => {
         return res.json({
             data: keynote,
         });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.put('/:id/attendance', async (req, res) => {
+    try {
+        const keynote = await KeynoteModel
+            .findByIdAndUpdate(
+                req.params.id,
+                {
+                    $addToSet: {
+                        attendees: req.user._id
+                    }
+                }
+            )
+            .exec();
+
+        return res.json({ data: keynote });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.delete('/:id/attendance', async (req, res) => {
+    try {
+        const keynote = await KeynoteModel
+            .findByIdAndUpdate(
+                req.params.id,
+                {
+                    $pull: {
+                        attendees: req.user._id
+                    }
+                }
+            )
+            .exec();
+
+        return res.json({ data: keynote });
     } catch (error) {
         return res.status(500).json({ error });
     }

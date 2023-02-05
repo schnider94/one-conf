@@ -1,5 +1,6 @@
 <script setup>
     import PageWrapper from '@/components/PageWrapper.vue';
+    import KeynoteForm from '@/components/forms/KeynoteForm.vue';
 
     defineProps({
         id: {
@@ -13,6 +14,6 @@
     <PageWrapper
         title="Create Keynote"
     >
-        Conference: {{ id }}
+        <KeynoteForm :conferenceId="id" />
     </PageWrapper>
 </template>

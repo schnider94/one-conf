@@ -9,13 +9,21 @@
     import Calendar from 'primevue/calendar'
     import Textarea from 'primevue/textarea';
 
-    import { create } from '@/API/conferences'
+    import { create } from '@/API/keynotes'
+    import { useAuthStore } from '@/stores/auth'
+
+    const props = defineProps({
+        conferenceId: {
+            type: String,
+            require: true,
+        }
+    });
 
     const state = reactive({
         location: '',
         name: '',
         description: '',
-        date: null,
+        date: [],
     });
 
     const rules = {
@@ -25,6 +33,7 @@
         date: { required },
     };
 
+    const authStore = useAuthStore()
     const router = useRouter()
     const submitted = ref(false)
     const toast = useToast()
@@ -41,15 +50,19 @@
             name: state.name,
             description: state.description,
             startDate: state.date[0].toISOString(),
-            endDate: state.date[1].toISOString()
+            endDate: state.date[1].toISOString(),
+            conference: props.conferenceId,
+            speakers: [
+                authStore.user._id,
+            ]
         })
-            .then(conference => {
-                router.replace(`/conference/${conference._id}`);
+            .then(keynote => {
+                router.replace(`/keynote/${keynote._id}`);
 
                 toast.add({
                     severity:'success',
-                    summary: 'Conference created',
-                    detail:'Successful created conference!',
+                    summary: 'Keynote created',
+                    detail:'Successful created keynote!',
                     life: 2000
                 });
             })

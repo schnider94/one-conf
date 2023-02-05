@@ -42,7 +42,13 @@ router.get('/search', async (req, res) => {
 router.get('/mine', async (req, res) => {
     try {
         const conferences = await ConferenceModel
-            .find({ owner: req.user._id }).exec();
+            .find({ $or: 
+                [
+                    { speakers: req.user._id },
+                    { attendees: req.user._id }
+                ]
+            })
+            .exec();
 
         return res.json({ data: conferences });
     } catch (error) {
@@ -72,6 +78,44 @@ router.post('/', async (req, res) => {
         return res.json({
             data: conference,
         });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.put('/:id/attendance', async (req, res) => {
+    try {
+        const keynote = await ConferenceModel
+            .findByIdAndUpdate(
+                req.params.id,
+                {
+                    $addToSet: {
+                        attendees: req.user._id
+                    }
+                }
+            )
+            .exec();
+
+        return res.json({ data: keynote });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.delete('/:id/attendance', async (req, res) => {
+    try {
+        const keynote = await ConferenceModel
+            .findByIdAndUpdate(
+                req.params.id,
+                {
+                    $pull: {
+                        attendees: req.user._id
+                    }
+                }
+            )
+            .exec();
+
+        return res.json({ data: keynote });
     } catch (error) {
         return res.status(500).json({ error });
     }
