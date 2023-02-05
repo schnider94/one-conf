@@ -9,18 +9,6 @@ router.get('/', (_, res) => {
     });
 });
 
-router.get('/:id', async (req, res) => {
-    try {
-        const conference = await ConferenceModel.findById(req.params.id);
-
-        return res.json({
-            data: conference,
-        })
-    } catch (error) {
-        return res.status(500).json({ error });
-    }
-});
-
 router.get('/all', async (_, res) => {
     try {
         const conferences = await ConferenceModel.find({}).exec();
@@ -46,6 +34,18 @@ router.get('/search', async (req, res) => {
             .exec();
 
         return res.json({ data: conferences });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        const conference = await ConferenceModel.findById(req.params.id);
+
+        return res.json({
+            data: conference,
+        })
     } catch (error) {
         return res.status(500).json({ error });
     }

@@ -25,11 +25,11 @@ export const useSearchConferenceStore = defineStore('search-conference', () => {
 
   const searchChanged = (search) => {
     if (search) {
-      router.push('conference-search');
+      router.push('/conference/search');
 
       startSearch(search);
     } else {
-      router.push('dashboard');
+      router.push('/dashboard');
 
       startSearch.cancel();
     }
