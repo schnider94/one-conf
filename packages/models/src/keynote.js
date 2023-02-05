@@ -17,6 +17,10 @@ const create = function(schema) {
             type: Date,
             required: true
         },
+        owner: {
+            type: mongoose.Types.ObjectId,
+            required: true
+        },
         speakers: {
             type: [mongoose.Types.ObjectId],
             required: true

@@ -13,6 +13,7 @@
     const isLoading = ref(false)
     const isAttending = ref(false)
     const isSpeaker = ref(false)
+    const isOwner = ref(false)
 
     const props = defineProps({
         id: {
@@ -24,7 +25,8 @@
     const setValues = () => {
         const userId = authStore.user._id;
         isAttending.value = key.value.attendees.includes(userId);
-        isAttending.value = key.value.speakers.includes(userId);
+        isSpeaker.value = key.value.speakers.includes(userId);
+        isOwner.value = key.value.owner === userId;
     }
 
     onMounted(async () => {
@@ -72,12 +74,6 @@
             class="w-full flex flex-row mt-3 justify-content-center gap-2"
         >
             <Button
-                v-if="isSpeaker"
-                label="Edit"
-                class="p-button-info"
-                @click="onEdit"
-            ></Button>
-            <Button
                 v-if="!isSpeaker && !isAttending"
                 :loading="isLoading"
                 label="I will attend"
@@ -90,6 +86,12 @@
                 label="I cannot attend"
                 class="p-button-danger"
                 @click="onDontAttend"
+            ></Button>
+            <Button
+                v-if="isSpeaker || isOwner"
+                label="Edit"
+                class="p-button-info"
+                @click="onEdit"
             ></Button>
         </div>
     </PageWrapper>

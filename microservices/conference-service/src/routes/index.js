@@ -45,7 +45,8 @@ router.get('/mine', async (req, res) => {
             .find({ $or: 
                 [
                     { speakers: req.user._id },
-                    { attendees: req.user._id }
+                    { attendees: req.user._id },
+                    { owner: req.user._id }
                 ]
             })
             .exec();

@@ -89,24 +89,24 @@
             class="w-full flex flex-row mt-3 justify-content-center gap-2"
         >
             <Button
-                v-if="isOwner"
-                label="Edit"
-                class="p-button-info"
-                @click="onEdit"
-            ></Button>
-            <Button
-                v-if="!isOwner && !isAttending"
+                v-if="!isAttending"
                 :loading="isLoading"
                 label="I will attend"
                 class="p-button-success"
                 @click="onAttend"
             ></Button>
             <Button
-                v-if="!isOwner && isAttending"
+                v-if="isAttending"
                 :loading="isLoading"
                 label="I cannot attend"
                 class="p-button-danger"
                 @click="onDontAttend"
+            ></Button>
+            <Button
+                v-if="isOwner"
+                label="Edit"
+                class="p-button-info"
+                @click="onEdit"
             ></Button>
         </div>
         <div class="flex flex-row justify-content-between align-items-center">

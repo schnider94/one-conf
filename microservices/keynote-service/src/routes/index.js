@@ -56,7 +56,8 @@ router.get('/mine', async (req, res) => {
             .find({ $or: 
                 [
                     { speakers: req.user._id },
-                    { attendees: req.user._id }
+                    { attendees: req.user._id },
+                    { owner: req.user._id }
                 ]
             })
             .exec();
@@ -81,7 +82,10 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const keynote = await KeynoteModel.create(req.body);
+        const keynote = await KeynoteModel.create({
+            ...req.body,
+            owner: req.user._id,
+        });
 
         return res.json({
             data: keynote,
