@@ -3,9 +3,9 @@
 
     import PageWrapper from '@/components/PageWrapper.vue';
     import { getById } from '@/API/conferences';
-    import { getByConferenceId as getKeynotesByConfId } from '@/API/keynotes';
+    import { byConferenceId as getKeynotesByConfId } from '@/API/keynotes';
     import ConferenceTile from '@/components/ConferenceTile.vue';
-import KeynoteTile from '@/components/KeynoteTile.vue';
+    import KeynoteTile from '@/components/KeynoteTile.vue';
 
     const conf = ref(null);
     const keys = ref(null);
