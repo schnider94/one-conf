@@ -17,7 +17,7 @@ router.get('/me', async (req, res) => {
             .exec();
 
         // We don't want to send the password
-        const { password, ...data } = user;
+        const { password, ...data } = user._doc;
 
         return res.json({ data });
     } catch (error) {
