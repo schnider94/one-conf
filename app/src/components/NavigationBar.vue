@@ -1,8 +1,11 @@
 <script setup>
     import { useRouter } from 'vue-router';
     import Button from 'primevue/button';
+    
+    import { useAuthStore } from '@/stores/auth';
 
     const router = useRouter()
+    const authStore = useAuthStore();
 
     defineProps({
         title: {
@@ -12,13 +15,19 @@
     })
 
     const onHome = () => {
-        router.push('/dashboard')
+        router.push('/dashboard');
+    }
+
+    const onLogout = () => {
+        authStore.logout();
+
+        router.push('/');
     }
 </script>
 
 <template>
     <div class="w-full flex flex-row align-items-center bg-blue-400 sticky" :style="{ height: '60px' }">
-        <div class="w-3">
+        <div class="w-3 flex flex-row justify-content-start align-items-center">
             <Button
                 icon="pi pi-home"
                 class="p-button-text p-button-lg text-800"
@@ -30,8 +39,12 @@
                 {{ title }}
             </h1>
         </div>
-        <div class="w-3">
-            
+        <div class="w-3 flex flex-row justify-content-end align-items-center">
+            <Button
+                icon="pi pi-sign-out"
+                class="p-button-text p-button-lg text-800"
+                @click="onLogout"
+            ></Button>
         </div>
     </div>
 </template>

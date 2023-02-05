@@ -3,24 +3,20 @@
     import Button from 'primevue/button';
 
     defineProps({
-        name: {
-            type: String,
-            required: true
-        },
-        location: {
-            type: String,
-            required: true
-        }, 
+        keynote: {
+            type: Object,
+            required: true,
+        }
     });
 </script>
 
 <template>
     <Card class="w-full md:w-6">
         <template #title>
-            {{ name }}
+            {{ keynote.name }}
         </template>
         <template #subtitle>
-            {{ location }}
+            {{ keynote.location }}
         </template>
         <template #content>
             <p>Keynote</p>

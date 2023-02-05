@@ -12,6 +12,17 @@ export const getById = function(id) {
 }
 
 
+export const mine = function() {
+    return axios
+        .get('/conference/mine')
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
+        });
+}
+
+
 export const all = function() {
     return axios
         .get('/conference/all')

@@ -17,8 +17,6 @@
     });
 
     const onClickConf = id => {
-        searchStore.resetSearch();
-
         router.push(`/conference/${id}`);
     }
 </script>
@@ -44,8 +42,7 @@
                 <ConferenceTile
                     v-for="conf in searchStore.items"
                     :key="conf._id"
-                    :name="conf.name"
-                    :location="conf.location"
+                    :conference="conf"
                     @click="onClickConf(conf._id)"
                 />
                 <div

@@ -1,6 +1,17 @@
 import axios from "axios"
 
 
+export const getById = function(id) {
+    return axios
+        .get(`/keynote/${id}`)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
+        });
+}
+
+
 export const byConferenceId = function(id) {
     return axios
         .get(`/keynote/conference/${id}`)
