@@ -23,7 +23,7 @@
             {{ location }}
         </template>
         <template #content>
-            <p>Conference</p>
+            <p>Keynote</p>
         </template>
         <template #footer>
             <Button icon="pi pi-check" label="Going"></Button>

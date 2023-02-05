@@ -9,7 +9,7 @@ router.get('/', (_, res) => {
 });
 
 router.get(
-    '/user',
+    '/me',
     (req, res) => {
         res.json({
             user: req.user

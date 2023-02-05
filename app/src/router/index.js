@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import ConferenceSearchView from '../views/ConferenceSearchView.vue'
+import ConferenceView from '../views/ConferenceView.vue'
 
 import { useAuthStore } from '@/stores/auth'
 
@@ -33,6 +34,15 @@ const router = createRouter({
       path: '/conference/search',
       name: 'conference-search',
       component: ConferenceSearchView,
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
+      path: '/conference/:id',
+      name: 'conference-detail',
+      component: ConferenceView,
+      props: true,
       meta: {
         requireAuth: true,
       }

@@ -1,11 +1,24 @@
 import axios from "axios"
 
 
+export const getById = function(id) {
+    return axios
+        .get(`/conference/${id}`)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
+        });
+}
+
+
 export const all = function() {
     return axios
         .get('/conference/all')
-        .then(data => {
+        .then(({ data }) => {
             console.log(data);
+
+            return data.data;
         });
 }
 
@@ -13,13 +26,15 @@ export const all = function() {
 export const search = function({ page, search }) {
     return axios
         .get('/conference/search', {
-            page,
-            search,
-            limit: 20,
+            params: {
+                page,
+                search,
+                limit: 20,
+            }
         })
-        .then(data => {
+        .then(({ data }) => {
             console.log(data);
 
-            return data.data
+            return data.data;
         });
 }

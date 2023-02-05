@@ -39,6 +39,17 @@ router.get('/search', async (req, res) => {
     }
 });
 
+router.get('/mine', async (req, res) => {
+    try {
+        const conferences = await ConferenceModel
+            .find({ owner: req.user._id }).exec();
+
+        return res.json({ data: conferences });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const conference = await ConferenceModel.findById(req.params.id);

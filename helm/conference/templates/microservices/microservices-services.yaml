@@ -19,8 +19,4 @@ spec:
       port: {{ $v.port }}
       targetPort: 4000
       protocol: TCP
-    - name: database
-      port: 27017
-      targetPort: 27017
-      protocol: TCP
 {{- end }}

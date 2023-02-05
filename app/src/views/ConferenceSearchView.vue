@@ -1,17 +1,26 @@
 <script setup>
     import { ref, onMounted } from 'vue';
+    import { useRouter } from 'vue-router';
+    import ProgressSpinner from 'primevue/progressspinner';
 
     import ConferenceTile from '@/components/ConferenceTile.vue';
     import PageWrapper from '@/components/PageWrapper.vue';
     import { useSearchConferenceStore } from '@/stores/search-conference';
 
-    const searchStore = useSearchConferenceStore()
+    const searchStore = useSearchConferenceStore();
+    const router = useRouter();
 
-    const input = ref(null)
+    const input = ref(null);
 
     onMounted(() => {
         input.value.focus();
-    })
+    });
+
+    const onClickConf = id => {
+        searchStore.resetSearch();
+
+        router.push(`/conference/${id}`);
+    }
 </script>
 
 <template>
@@ -31,13 +40,20 @@
                     @click="searchStore.search = ''"
                 ></i>
             </span>
-            <div class="flex-row flex-wrap">
+            <div class="flex-row flex-wrap gap-2 py-2">
                 <ConferenceTile
                     v-for="conf in searchStore.items"
                     :key="conf._id"
                     :name="conf.name"
                     :location="conf.location"
+                    @click="onClickConf(conf._id)"
                 />
+                <div
+                    v-if="searchStore.isLoading"
+                    class="flex flex-row justify-items-center mt-2"
+                >
+                    <ProgressSpinner />
+                </div>
             </div>
         </div>
     </PageWrapper>

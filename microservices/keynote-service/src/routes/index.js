@@ -39,6 +39,28 @@ router.get('/search', async (req, res) => {
     }
 });
 
+router.get('/conference/:id', async (req, res) => {
+    try {
+        const keynotes = await KeynoteModel
+            .find({ conference: req.params.id }).exec();
+
+        return res.json({ data: keynotes });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.get('/mine', async (req, res) => {
+    try {
+        const keynotes = await KeynoteModel
+            .find({ speakers: req.user._id }).exec();
+
+        return res.json({ data: keynotes });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const keynote = await KeynoteModel.findById(req.params.id);

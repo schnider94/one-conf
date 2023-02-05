@@ -12,12 +12,12 @@
     })
 
     const onHome = () => {
-        router.push('dashboard')
+        router.push('/dashboard')
     }
 </script>
 
 <template>
-    <div class="w-full flex flex-row align-items-center bg-blue-400" :style="{ height: '60px' }">
+    <div class="w-full flex flex-row align-items-center bg-blue-400 sticky" :style="{ height: '60px' }">
         <div class="w-3">
             <Button
                 icon="pi pi-home"
