@@ -12,7 +12,9 @@ router.get('/', (_, res) => {
 
 router.get('/me', async (req, res) => {
     try {
-        const user = await UserModel.findById(req.user._id);
+        const user = await UserModel
+            .findById(req.user._id)
+            .exec();
 
         // We don't want to send the password
         const { password, ...data } = user;

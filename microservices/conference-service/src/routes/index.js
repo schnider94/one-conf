@@ -59,7 +59,9 @@ router.get('/mine', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const conference = await ConferenceModel.findById(req.params.id);
+        const conference = await ConferenceModel
+            .findById(req.params.id)
+            .exec();
 
         return res.json({
             data: conference,

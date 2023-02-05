@@ -42,7 +42,8 @@ router.get('/search', async (req, res) => {
 router.get('/conference/:id', async (req, res) => {
     try {
         const keynotes = await KeynoteModel
-            .find({ conference: req.params.id }).exec();
+            .find({ conference: req.params.id })
+            .exec();
 
         return res.json({ data: keynotes });
     } catch (error) {
@@ -70,7 +71,9 @@ router.get('/mine', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const keynote = await KeynoteModel.findById(req.params.id);
+        const keynote = await KeynoteModel
+            .findById(req.params.id)
+            .exec();
 
         return res.json({
             data: keynote,

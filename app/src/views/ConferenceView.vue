@@ -27,8 +27,10 @@
     });
 
     const setValues = () => {
-        isOwner.value = conf.value.owner === authStore.user._id;
-        isAttending.value = conf.value.attendees.includes(authStore.user._id);
+        const userId = authStore.user._id;
+
+        isOwner.value = conf.value.owner === userId;
+        isAttending.value = conf.value.attendees.includes(userId);
     }
 
     onMounted(async () => {

@@ -60,7 +60,7 @@
                 ></Button>
             </div>
         </div>
-        <div class="flex-row flex-wrap gap-2 py-2">
+        <div class="flex flex-row flex-wrap gap-2 py-2">
             <ConferenceTile
                 v-for="conf in conferences"
                 :key="conf._id"

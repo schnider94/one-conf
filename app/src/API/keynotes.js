@@ -62,9 +62,9 @@ export const create = function(props) {
 }
 
 
-export const attend = function(props) {
+export const attend = function(id) {
     return axios
-        .put(`/keynote/${props.id}/attendance`)
+        .put(`/keynote/${id}/attendance`)
         .then(({ data }) => {
             console.log(data);
 
@@ -73,9 +73,9 @@ export const attend = function(props) {
 }
 
 
-export const unattend = function(props) {
+export const unattend = function(id) {
     return axios
-        .delete(`/keynote/${props.id}/attendance`)
+        .delete(`/keynote/${id}/attendance`)
         .then(({ data }) => {
             console.log(data);
 
