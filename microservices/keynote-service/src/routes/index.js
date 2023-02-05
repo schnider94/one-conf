@@ -98,6 +98,30 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.post('/:id', async (req, res) => {
+    try {
+        const keynote = await KeynoteModel
+            .findByIdAndUpdate(
+                req.params.id,
+                {
+                    $set: {
+                        ...req.body
+                    }
+                },
+                {
+                    returnDocument: 'after',
+                }
+            )
+            .exec();
+
+        return res.json({
+            data: keynote,
+        });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
 router.put('/:id/attendance', async (req, res) => {
     try {
         const keynote = await KeynoteModel
@@ -107,6 +131,9 @@ router.put('/:id/attendance', async (req, res) => {
                     $addToSet: {
                         attendees: req.user._id
                     }
+                },
+                {
+                    returnDocument: 'after',
                 }
             )
             .exec();
@@ -126,6 +153,9 @@ router.delete('/:id/attendance', async (req, res) => {
                     $pull: {
                         attendees: req.user._id
                     }
+                },
+                {
+                    returnDocument: 'after',
                 }
             )
             .exec();
