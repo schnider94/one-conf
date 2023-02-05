@@ -3,7 +3,7 @@ import axios from "axios"
 
 export const all = function() {
     return axios
-        .get('/conference/all')
+        .get('/keynote/all')
         .then(data => {
             console.log(data);
         });
@@ -12,7 +12,7 @@ export const all = function() {
 
 export const search = function({ page, search }) {
     return axios
-        .get('/conference/search', {
+        .get('/keynote/search', {
             page,
             search,
             limit: 20,

@@ -34,7 +34,7 @@ const create = function(schema) {
 };
 
 const setup = function(Schema) {
-    
+    Schema.index({ name: 'text', location: 'text' });
 };
 
 module.exports = {

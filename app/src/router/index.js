@@ -3,6 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import DashboardView from '../views/DashboardView.vue'
+import ConferenceSearchView from '../views/ConferenceSearchView.vue'
+
 import { useAuthStore } from '@/stores/auth'
 
 
@@ -23,6 +25,14 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
+      path: '/conference/search',
+      name: 'conference-search',
+      component: ConferenceSearchView,
       meta: {
         requireAuth: true,
       }

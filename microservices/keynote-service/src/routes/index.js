@@ -23,7 +23,27 @@ router.get('/:id', async (req, res) => {
 
 router.get('/all', async (_, res) => {
     try {
-        const keynotes = await KeynoteModel.find({});
+        const keynotes = await KeynoteModel.find({}).exec();
+
+        return res.json({ data: keynotes });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
+router.get('/search', async (req, res) => {
+    const {
+        limit = 30,
+        page = 0,
+        search,
+    } = req.query;
+
+    try {
+        const keynotes = await KeynoteModel
+            .find({$text: {$search: search}})
+            .skip(page)
+            .limit(limit)
+            .exec();
 
         return res.json({ data: keynotes });
     } catch (error) {

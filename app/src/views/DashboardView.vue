@@ -1,7 +1,7 @@
 <script setup>
-  import { all } from '@/API/conferences';
+  import { useSearchConferenceStore } from '@/stores/search-conference';
 
-  all()
+  const searchStore = useSearchConferenceStore()
 </script>
 
 <template>
@@ -9,5 +9,13 @@
     <h1>
       Dashboard
     </h1>
+    <span class="p-input-icon-left p-input-icon-right">
+        <i class="pi pi-search"></i>
+        <InputText
+          type="text"
+          v-model="searchStore.search"
+          placeholder="Search"
+        />
+    </span>
   </main>
 </template>

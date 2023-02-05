@@ -13,7 +13,7 @@ export const useAuthStore = defineStore('auth', {
     init() {
       const token = localStorage.getItem('token')
 
-      if (!!token) this.loginSucceeded(token)
+      if (token) this.loginSucceeded(token)
       else this.logoutSucceeded()
 
       this.isInitialized = true
