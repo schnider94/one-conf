@@ -7,7 +7,7 @@
   const toast = useToast()
   const route = useRoute()
 
-  if (!!route.query?.returnTo) {
+  if (route.query?.returnTo) {
     toast.add({
       severity:'error',
       summary: 'Not logged in',
@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <main class="flex flex-row w-screen h-screen justify-content-center align-items-center">
+  <main class="flex flex-row w-screen h-screen justify-content-center align-items-center p-5">
     <LoginForm />
   </main>
 </template>

@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', {
     isInitialized: false,
     returnTo: null,
     user: null,
+    userPromise: null
   }),
   actions: {
     init() {
@@ -18,17 +19,30 @@ export const useAuthStore = defineStore('auth', {
       if (token) this.loginSucceeded(token);
       else this.logoutSucceeded();
     },
+    ensureUser() {
+      if (!this.userPromise) {
+        this.userPromise = new Promise((resolve, reject) => {
+          me()
+            .then(user => {
+              this.user = user
+              resolve(user);
+            })
+            .catch(() => {
+              this.logoutSucceeded();
+              reject();
+            });
+        }); 
+      }
+
+      return this.userPromise;
+    },
     loginSucceeded(token) {
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      this.isInitialized = true;
+      this.isLoggedIn = true;
 
-      me()
-        .then(user => {
-          this.isInitialized = true;
-          this.user = user
-          this.isLoggedIn = true;
-        })
-        .catch(() => this.logoutSucceeded());
+      this.ensureUser();
     },
     logoutSucceeded() {
       this.isInitialized = true;

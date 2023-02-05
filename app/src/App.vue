@@ -13,7 +13,7 @@
   <Toast />
   <RouterView v-if="authStore.isInitialized" />
   <div v-else class="w-screen h-screen flex flex-row justify-content-center align-items-center">
-    <ProgressSpinner :stroke-width="4" />
+    <ProgressSpinner stroke-width="4" />
   </div>
 </template>
 

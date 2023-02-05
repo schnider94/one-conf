@@ -14,7 +14,10 @@ router.get('/me', async (req, res) => {
     try {
         const user = await UserModel.findById(req.user._id);
 
-        return res.json({ data: user });
+        // We don't want to send the password
+        const { password, ...data } = user;
+
+        return res.json({ data });
     } catch (error) {
         return res.status(500).json({ error });
     }
