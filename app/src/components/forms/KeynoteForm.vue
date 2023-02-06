@@ -8,8 +8,10 @@
     import InputText from 'primevue/inputtext'
     import Calendar from 'primevue/calendar'
     import Textarea from 'primevue/textarea';
+    import AutoComplete from 'primevue/autocomplete';
 
     import { create, remove, update } from '@/API/keynotes'
+    import { search } from '@/API/user'
     import { useAuthStore } from '@/stores/auth'
 
     const props = defineProps({
@@ -41,6 +43,10 @@
             type: Date,
             default: null,
         },
+        speakers: {
+            type: Array,
+            default: [],
+        },
         isEditing: {
             type: Boolean,
             default: false,
@@ -52,6 +58,7 @@
         name: props.name,
         description: props.description,
         date: [props.startDate, props.endDate],
+        speakers: props.speakers,
     });
 
     const rules = {
@@ -59,12 +66,15 @@
         name: { required },
         description: { required },
         date: { required },
+        speakers: { required }
     };
 
     const authStore = useAuthStore()
     const router = useRouter()
     const submitted = ref(false)
     const toast = useToast()
+
+    const filteredUsers = ref()
 
     const v$ = useVuelidate(rules, state)
 
@@ -99,6 +109,8 @@
 
         if (!isFormValid) return
 
+        console.log(state.speakers);
+
         (props.isEditing ? sendUpdate() : sendCreate())
             .then(keynote => {
                 router.replace(`/keynote/${keynote._id}`);
@@ -124,6 +136,19 @@
 
                 router.replace(`/conference/${props.conferenceId}`);
             })
+    }
+
+    const searchUsers = (event) => {
+        if (!event.query.trim().length) {
+            filteredUsers.value = []
+
+            return;
+        }
+
+        search(event.query.trim())
+            .then(users => {
+                filteredUsers.value = users;
+            });
     }
 </script>
 
@@ -209,7 +234,27 @@
                 </span>
             </span>
             <small v-else-if="(v$.date.$invalid && submitted) || v$.date.$pending.$response" class="p-error">
-                {{ v$.name.required.$message.replace('Value', 'Date') }}
+                {{ v$.date.required.$message.replace('Value', 'Date') }}
+            </small>
+        </div>
+        <div class="field">
+            <div class="p-float-label">
+                <AutoComplete
+                    :multiple="true"
+                    v-model="v$.speakers.$model"
+                    :suggestions="filteredUsers"
+                    @complete="searchUsers($event)"
+                    optionLabel="name"
+                />
+                <label for="speakers" :class="{'p-error': v$.speakers.$invalid && submitted}">Speakers</label>
+            </div>
+            <span v-if="v$.date.$error && submitted">
+                <span id="speakers-error" v-for="(error, index) of v$.speakers.$errors" :key="index">
+                    <small class="p-error">{{error.$message}}</small>
+                </span>
+            </span>
+            <small v-else-if="(v$.speakers.$invalid && submitted) || v$.speakers.$pending.$response" class="p-error">
+                {{ v$.speakers.required.$message.replace('Value', 'Speakers') }}
             </small>
         </div>
         <div class="flex flex-row justify-center gap-1">
