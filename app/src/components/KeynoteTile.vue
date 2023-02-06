@@ -18,6 +18,14 @@
             {{ keynote.location }}
         </template>
         <template #content>
+            <div class="w-full flex flex-row align-items-center justify-content-between">
+                <span>
+
+                </span>
+                <span>
+                    Attendees: {{ keynote.attendees.length }}
+                </span>
+            </div>
             <p>{{ keynote.description }}</p>
         </template>
     </Card>

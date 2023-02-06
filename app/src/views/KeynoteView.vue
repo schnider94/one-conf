@@ -2,6 +2,7 @@
     import { ref, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
     import Button from 'primevue/button';
+    import Card from 'primevue/card';
 
     import PageWrapper from '@/components/PageWrapper.vue';
     import KeynoteTile from '@/components/KeynoteTile.vue';
@@ -17,6 +18,7 @@
     const isAttending = ref(false)
     const isSpeaker = ref(false)
     const isOwner = ref(false)
+    const speakers = ref([])
 
     const props = defineProps({
         id: {
@@ -35,10 +37,7 @@
 
     onMounted(async () => {
         key.value = await getById(props.id);
-
-        const users = await usersByIds([ '63c94df970a4aee56828a6cd' ]);
-
-        console.log(users);
+        speakers.value = await usersByIds(key.value.speakers);
 
         setValues();
     });
@@ -101,6 +100,16 @@
                 class="p-button-info"
                 @click="onEdit"
             ></Button>
+        </div>
+        <div class="w-full flex flex-column gap-2">
+            <Card
+                v-for="speaker in speakers"
+                :key="speaker._id"
+            >
+                <template #content>
+                    {{ speaker.name }}
+                </template>
+            </Card>
         </div>
     </PageWrapper>
 </template>

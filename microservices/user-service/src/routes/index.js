@@ -4,6 +4,12 @@ const UserModel = require('../models/user');
 
 const router = express.Router();
 
+const makeUsersSafe = users => users.map(user => ({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+}));
+
 router.get('/', (_, res) => {
     return res.json({
         message: 'Conferense user-service API v1',
@@ -39,11 +45,7 @@ router.get('/search', async (req, res) => {
             .limit(limit)
             .exec();
 
-        const safeUsers = users.map(user => ({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-        }));
+        const safeUsers = makeUsersSafe(users);
 
         return res.json({ data: safeUsers });
     } catch (error) {
@@ -77,8 +79,10 @@ router.post('/byIds', async (req, res) => {
             .find({ _id: { $in: req.body['ids[]'] } })
             .exec();
 
+        const safeUsers = makeUsersSafe(users);
+
         return res.json({
-            data: users
+            data: safeUsers
         });
     } catch (error) {
         console.error(error);
