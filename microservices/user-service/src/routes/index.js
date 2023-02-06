@@ -40,7 +40,13 @@ router.get('/search', async (req, res) => {
             .limit(limit)
             .exec();
 
-        return res.json({ data: users });
+        const safeUsers = users.map(user => ({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+        }));
+
+        return res.json({ data: safeUsers });
     } catch (error) {
         return res.status(500).json({ error });
     }

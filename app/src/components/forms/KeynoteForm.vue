@@ -12,7 +12,6 @@
 
     import { create, remove, update } from '@/API/keynotes'
     import { search } from '@/API/user'
-    import { useAuthStore } from '@/stores/auth'
 
     const props = defineProps({
         conferenceId: {
@@ -45,7 +44,7 @@
         },
         speakers: {
             type: Array,
-            default: [],
+            default: () => [],
         },
         isEditing: {
             type: Boolean,
@@ -69,7 +68,6 @@
         speakers: { required }
     };
 
-    const authStore = useAuthStore()
     const router = useRouter()
     const submitted = ref(false)
     const toast = useToast()
@@ -79,6 +77,8 @@
     const v$ = useVuelidate(rules, state)
 
     const sendCreate = () => {
+        const speakerIds = state.speakers.map(speaker => speaker._id);
+
         return create({
             location: state.location,
             name: state.name,
@@ -86,9 +86,7 @@
             startDate: state.date[0].toISOString(),
             endDate: state.date[1].toISOString(),
             conference: props.conferenceId,
-            speakers: [
-                authStore.user._id,
-            ]
+            speakers: speakerIds
         });
     }
 
@@ -108,8 +106,6 @@
         submitted.value = true
 
         if (!isFormValid) return
-
-        console.log(state.speakers);
 
         (props.isEditing ? sendUpdate() : sendCreate())
             .then(keynote => {
@@ -147,7 +143,10 @@
 
         search(event.query.trim())
             .then(users => {
-                filteredUsers.value = users;
+                filteredUsers.value = users.map(user => ({
+                    ...user,
+                    label: `${user.name} <${user.email}>`
+                }));
             });
     }
 </script>
@@ -244,7 +243,7 @@
                     v-model="v$.speakers.$model"
                     :suggestions="filteredUsers"
                     @complete="searchUsers($event)"
-                    optionLabel="name"
+                    optionLabel="label"
                 />
                 <label for="speakers" :class="{'p-error': v$.speakers.$invalid && submitted}">Speakers</label>
             </div>
