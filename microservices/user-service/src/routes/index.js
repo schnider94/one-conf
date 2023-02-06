@@ -26,6 +26,26 @@ router.get('/me', async (req, res) => {
     }
 });
 
+router.get('/search', async (req, res) => {
+    const {
+        limit = 30,
+        page = 0,
+        search,
+    } = req.query;
+
+    try {
+        const users = await UserModel
+            .find({$text: {$search: search}})
+            .skip(page)
+            .limit(limit)
+            .exec();
+
+        return res.json({ data: users });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
 router.get('/:id', async (req, res) => {
     try {
         const user = await UserModel
@@ -48,23 +68,17 @@ router.get('/:id', async (req, res) => {
 
 router.post('/byIds', async (req, res) => {
     try {
-        const ids = req.body.ids.map(mongoose.Types.ObjectId);
-
         const users = await UserModel
-            .find({ _id: { $in: ids } })
+            .find({ _id: { $in: req.body.ids } })
             .exec();
 
-        console.log(users);
-
-        const data = users.map(user => ({
-            _id: user._doc._id,
-            name: user._doc.name,
-        }));
-
         return res.json({
-            data
+            data: users
         });
     } catch (error) {
+        console.error(error);
+        console.trace();
+
         return res.status(500).json({ error });
     }
 });

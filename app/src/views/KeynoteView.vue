@@ -7,6 +7,7 @@
     import KeynoteTile from '@/components/KeynoteTile.vue';
     import { useAuthStore } from '@/stores/auth';
     import { getById, attend, unattend } from '@/API/keynotes';
+    import { byIds as usersByIds } from '@/API/user';
 
     const key = ref(null);
     const authStore = useAuthStore()
@@ -34,6 +35,10 @@
 
     onMounted(async () => {
         key.value = await getById(props.id);
+
+        const users = await usersByIds([ '63c94df970a4aee56828a6cd' ]);
+
+        console.log(users);
 
         setValues();
     });

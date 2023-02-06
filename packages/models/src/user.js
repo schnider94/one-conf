@@ -34,6 +34,8 @@ const setup = function(Schema) {
         }
     );
 
+    Schema.index({ name: 'text', email: 'text' });
+
     Schema.methods.isValidPassword = async function(password) {
         const user = this;
         const compare = await bcrypt.compare(password, user.password);
