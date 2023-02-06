@@ -9,7 +9,7 @@
     import Calendar from 'primevue/calendar'
     import Textarea from 'primevue/textarea';
 
-    import { create, update } from '@/API/keynotes'
+    import { create, remove, update } from '@/API/keynotes'
     import { useAuthStore } from '@/stores/auth'
 
     const props = defineProps({
@@ -111,6 +111,20 @@
                 });
             })
     }
+
+    const onDelete = () => {
+        remove(props.id)
+            .then(() => {
+                toast.add({
+                    severity:'success',
+                    summary: 'Keynote deleted',
+                    detail:'Successfully deleted keynote!',
+                    life: 2000
+                });
+
+                router.replace(`/conference/${props.conferenceId}`);
+            })
+    }
 </script>
 
 <template>
@@ -198,7 +212,16 @@
                 {{ v$.name.required.$message.replace('Value', 'Date') }}
             </small>
         </div>
-        <div class="flex flex-row justify-end gap-1">
+        <div class="flex flex-row justify-center gap-1">
+            <PrimeButton
+                v-if="isEditing"
+                type="button"
+                label="Delete"
+                class="p-button-danger"
+                icon="pi pi-times"
+                iconPos="left"
+                @click="onDelete"
+            />
             <PrimeButton
                 type="submit"
                 label="Create"

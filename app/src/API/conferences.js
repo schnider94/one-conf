@@ -73,6 +73,17 @@ export const update = function(props) {
 }
 
 
+export const remove = function(id) {
+    return axios
+        .delete(`/conference/${id}`)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
+        });
+}
+
+
 export const attend = function(id) {
     return axios
         .put(`/conference/${id}/attendance`)

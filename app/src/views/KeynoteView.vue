@@ -1,5 +1,6 @@
 <script setup>
     import { ref, onMounted } from 'vue';
+    import { useRouter } from 'vue-router';
     import Button from 'primevue/button';
 
     import PageWrapper from '@/components/PageWrapper.vue';
@@ -9,6 +10,7 @@
 
     const key = ref(null);
     const authStore = useAuthStore()
+    const router = useRouter()
 
     const isLoading = ref(false)
     const isAttending = ref(false)
@@ -24,6 +26,7 @@
 
     const setValues = () => {
         const userId = authStore.user._id;
+        
         isAttending.value = key.value.attendees.includes(userId);
         isSpeaker.value = key.value.speakers.includes(userId);
         isOwner.value = key.value.owner === userId;
@@ -60,7 +63,7 @@
     }
 
     const onEdit = () => {
-        console.log('Edit keynote');
+        router.push(`/keynote/${key.value._id}/edit`);
     }
 </script>
 
