@@ -90,6 +90,8 @@ router.post('/', async (req, res) => {
         ...props
     } =  req.body;
 
+    console.error(req.body);
+
     const speakerIds = speakers.map(id => mongoose.Types.ObjectId(id))
 
     try {

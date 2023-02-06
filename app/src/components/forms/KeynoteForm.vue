@@ -56,7 +56,7 @@
         location: props.location,
         name: props.name,
         description: props.description,
-        date: [props.startDate, props.endDate],
+        date: props.isEditing ? [props.startDate, props.endDate] : [],
         speakers: props.speakers,
     });
 
