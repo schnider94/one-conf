@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const KeynoteModel = require('./../models/keynote');
 
 const router = express.Router();
@@ -84,9 +85,17 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    const {
+        speakers,
+        ...props
+    } =  req.body;
+
+    const speakerIds = speakers.map(id => mongoose.Types.ObjectId(id))
+
     try {
         const keynote = await KeynoteModel.create({
-            ...req.body,
+            ...props,
+            speakers: speakerIds,
             owner: req.user._id,
         });
 
