@@ -100,13 +100,13 @@ router.post('/', async (req, res) => {
 
 router.post('/:id', async (req, res) => {
     try {
-        const { id, ...params } = req.params;
+        const { id, ...props } = req.body;
 
         const keynote = await KeynoteModel
             .findByIdAndUpdate(
-                id,
+                req.params.id,
                 {
-                    $set: params
+                    $set: props
                 },
                 {
                     returnDocument: 'after',
