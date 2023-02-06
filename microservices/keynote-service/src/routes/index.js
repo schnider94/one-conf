@@ -86,18 +86,14 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const {
-        speakers,
+        'speakers[]': speakers,
         ...props
     } =  req.body;
-
-    console.error(req.body);
-
-    const speakerIds = speakers.map(id => mongoose.Types.ObjectId(id))
 
     try {
         const keynote = await KeynoteModel.create({
             ...props,
-            speakers: speakerIds,
+            speakers,
             owner: req.user._id,
         });
 

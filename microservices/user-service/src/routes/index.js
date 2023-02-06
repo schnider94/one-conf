@@ -74,7 +74,7 @@ router.get('/:id', async (req, res) => {
 router.post('/byIds', async (req, res) => {
     try {
         const users = await UserModel
-            .find({ _id: { $in: req.body.ids } })
+            .find({ _id: { $in: req.body['ids[]'] } })
             .exec();
 
         return res.json({
