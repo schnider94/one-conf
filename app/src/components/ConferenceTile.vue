@@ -1,6 +1,5 @@
 <script setup>
     import Card from 'primevue/card';
-    import Button from 'primevue/button';
 
     defineProps({
         conference: {
@@ -18,11 +17,8 @@
         <template #subtitle>
             {{ conference.location }}
         </template>
-        <template #content>
-            <p>Conference</p>
-        </template>
-        <template #footer>
-            <Button icon="pi pi-check" label="Going"></Button>
+        <template #content v-if="conference.description">
+            <p>{{ conference.description }}</p>
         </template>
     </Card>
 </template>

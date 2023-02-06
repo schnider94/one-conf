@@ -6,7 +6,9 @@ import DashboardView from '../views/DashboardView.vue'
 import ConferenceSearchView from '../views/ConferenceSearchView.vue'
 import ConferenceView from '../views/ConferenceView.vue'
 import CreateConferenceView from '../views/CreateConferenceView.vue'
+import EditConferenceView from '../views/EditConferenceView.vue'
 import CreateKeynoteView from '../views/CreateKeynoteView.vue'
+import EditKeynoteView from '../views/EditKeynoteView.vue'
 import KeynoteView from '../views/KeynoteView.vue'
 
 import { useAuthStore } from '@/stores/auth'
@@ -50,6 +52,15 @@ const router = createRouter({
       }
     },
     {
+      path: '/conference/:id/edit',
+      name: 'conference-edit',
+      component: EditConferenceView,
+      props: true,
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
       path: '/conference/:id',
       name: 'conference-detail',
       component: ConferenceView,
@@ -71,6 +82,15 @@ const router = createRouter({
       path: '/keynote/:id',
       name: 'keynote-detail',
       component: KeynoteView,
+      props: true,
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
+      path: '/keynote/:id/edit',
+      name: 'keynote-edit',
+      component: EditKeynoteView,
       props: true,
       meta: {
         requireAuth: true,

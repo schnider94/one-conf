@@ -9,21 +9,49 @@
     import Calendar from 'primevue/calendar'
     import Textarea from 'primevue/textarea';
 
-    import { create } from '@/API/keynotes'
+    import { create, update } from '@/API/keynotes'
     import { useAuthStore } from '@/stores/auth'
 
     const props = defineProps({
         conferenceId: {
             type: String,
             require: true,
-        }
+        },
+        id: {
+            type: String,
+            default: null
+        },
+        location: {
+            type: String,
+            default: ''
+        },
+        name: {
+            type: String,
+            default: ''
+        },
+        description: {
+            type: String,
+            default: ''
+        },
+        startDate: {
+            type: Date,
+            default: null,
+        },
+        endDate: {
+            type: Date,
+            default: null,
+        },
+        isEditing: {
+            type: Boolean,
+            default: false,
+        },
     });
 
     const state = reactive({
-        location: '',
-        name: '',
-        description: '',
-        date: [],
+        location: props.location,
+        name: props.name,
+        description: props.description,
+        date: [props.startDate, props.endDate],
     });
 
     const rules = {
@@ -40,12 +68,8 @@
 
     const v$ = useVuelidate(rules, state)
 
-    const handleSubmit = (isFormValid) => {
-        submitted.value = true
-
-        if (!isFormValid) return
-
-        create({
+    const sendCreate = () => {
+        return create({
             location: state.location,
             name: state.name,
             description: state.description,
@@ -55,14 +79,34 @@
             speakers: [
                 authStore.user._id,
             ]
-        })
+        });
+    }
+
+    const sendUpdate = () => {
+        return update({
+            id: props.id,
+            location: state.location,
+            name: state.name,
+            description: state.description,
+            startDate: state.date[0].toISOString(),
+            endDate: state.date[1].toISOString(),
+            conference: props.conferenceId
+        });
+    }
+
+    const handleSubmit = (isFormValid) => {
+        submitted.value = true
+
+        if (!isFormValid) return
+
+        (props.isEditing ? sendUpdate() : sendCreate())
             .then(keynote => {
                 router.replace(`/keynote/${keynote._id}`);
 
                 toast.add({
                     severity:'success',
-                    summary: 'Keynote created',
-                    detail:'Successful created keynote!',
+                    summary: 'Keynote saved',
+                    detail:'Successful saved keynote!',
                     life: 2000
                 });
             })

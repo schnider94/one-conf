@@ -9,13 +9,44 @@
     import Calendar from 'primevue/calendar'
     import Textarea from 'primevue/textarea';
 
-    import { create } from '@/API/conferences'
+    import { create, update } from '@/API/conferences'
+
+    const props = defineProps({
+        location: {
+            type: String,
+            default: ''
+        },
+        id: {
+            type: String,
+            default: null
+        },
+        name: {
+            type: String,
+            default: ''
+        },
+        description: {
+            type: String,
+            default: ''
+        },
+        startDate: {
+            type: Date,
+            default: null,
+        },
+        endDate: {
+            type: Date,
+            default: null,
+        },
+        isEditing: {
+            type: Boolean,
+            default: false,
+        },
+    });
 
     const state = reactive({
-        location: '',
-        name: '',
-        description: '',
-        date: null,
+        location: props.location,
+        name: props.name,
+        description: props.description,
+        date: [props.startDate, props.endDate],
     });
 
     const rules = {
@@ -31,28 +62,43 @@
 
     const v$ = useVuelidate(rules, state)
 
-    const handleSubmit = (isFormValid) => {
-        submitted.value = true
-
-        if (!isFormValid) return
-
-        create({
+    const sendCreate = () => {
+        return create({
             location: state.location,
             name: state.name,
             description: state.description,
             startDate: state.date[0].toISOString(),
             endDate: state.date[1].toISOString()
-        })
+        });
+    }
+
+    const sendUpdate = () => {
+        return update({
+            id: props.id,
+            location: state.location,
+            name: state.name,
+            description: state.description,
+            startDate: state.date[0].toISOString(),
+            endDate: state.date[1].toISOString()
+        });
+    }
+
+    const handleSubmit = (isFormValid) => {
+        submitted.value = true
+
+        if (!isFormValid) return
+
+        (props.isEditing ? sendUpdate() : sendCreate())
             .then(conference => {
                 router.replace(`/conference/${conference._id}`);
 
                 toast.add({
                     severity:'success',
-                    summary: 'Conference created',
-                    detail:'Successful created conference!',
+                    summary: 'Conference saved',
+                    detail:'Successfully saved conference!',
                     life: 2000
                 });
-            })
+            });
     }
 </script>
 

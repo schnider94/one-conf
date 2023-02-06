@@ -77,7 +77,7 @@
     }
 
     const onEdit = () => {
-        console.log('Edit Conference');
+        router.push(`/conference/${conf.value._id}/edit`);
     }
 </script>
 

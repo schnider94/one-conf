@@ -88,13 +88,13 @@ router.post('/', async (req, res) => {
 
 router.post('/:id', async (req, res) => {
     try {
+        const { id, ...params } = req.params;
+
         const conference = await ConferenceModel
             .findByIdAndUpdate(
-                req.params.id,
+                id,
                 {
-                    $set: {
-                        ...req.body
-                    }
+                    $set: params
                 },
                 {
                     returnDocument: 'after',

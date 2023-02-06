@@ -62,6 +62,17 @@ export const create = function(props) {
 }
 
 
+export const update = function(props) {
+    return axios
+        .post(`/keynote/${props.id}`, props)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
+        });
+}
+
+
 export const attend = function(id) {
     return axios
         .put(`/keynote/${id}/attendance`)
