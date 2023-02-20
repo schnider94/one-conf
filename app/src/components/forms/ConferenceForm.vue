@@ -203,6 +203,13 @@
         </div>
         <div class="flex flex-row justify-center gap-1">
             <PrimeButton
+                v-if="!isEditing"
+                type="submit"
+                label="Create"
+                icon="pi pi-send"
+                iconPos="right"
+            />
+            <PrimeButton
                 v-if="isEditing"
                 type="button"
                 label="Delete"
@@ -212,8 +219,9 @@
                 @click="onDelete"
             />
             <PrimeButton
+                v-if="isEditing"
                 type="submit"
-                label="Create"
+                label="Send"
                 icon="pi pi-send"
                 iconPos="right"
             />

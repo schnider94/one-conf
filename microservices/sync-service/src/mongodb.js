@@ -56,6 +56,12 @@ const deleteBySelf = {
     keynotes: {},
 };
 
+const updateBySelf = {
+    users: {},
+    conferences: {},
+    keynotes: {},
+};
+
 
 const insertUser = doc => getUserModel().create(doc);
 const insertConference = doc => getConferenceModel().create(doc);
@@ -64,6 +70,10 @@ const insertKeynote = doc => getKeynoteModel().create(doc);
 const deleteUser = ({ _id }) => getUserModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
 const deleteConference = ({ _id }) => getConferenceModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
 const deleteKeynote = ({ _id }) => getKeynoteModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
+
+const updateUser = doc => getUserModel().update(doc);
+const updateConference = doc => getConferenceModel().deleteOne(doc);
+const updateKeynote = doc => getKeynoteModel().deleteOne(doc);
 
 const _insert = function(collection, doc) {
     const inserts = {
@@ -91,11 +101,24 @@ const _delete = function(collection, doc) {
     else console.error(`Delete for collection "${collection}" does not exist`);
 }
 
+const _update = function(collection, doc) {
+    const updaters = {
+        users: updateUser,
+        conferences: updateConference,
+        keynotes: updateKeynote,
+    }
+
+    updateBySelf[collection][doc._id] = true;
+
+    if (updaters[collection]) updaters[collection](doc);
+    else console.error(`Update for collection "${collection}" does not exist`);
+}
 
 const updateDB = function(data) {
     const types = {
         insert: _insert,
         delete: _delete,
+        modify: _update,
     };
 
     if (types[data.type]) types[data.type](data.collection, data.doc);
@@ -103,7 +126,7 @@ const updateDB = function(data) {
 }
 
 const subscribe = function(fn) {
-    mongoose.connection.watch().on('change', data => {
+    mongoose.connection.watch(undefined, { fullDocument: true }).on('change', data => {
         console.log('Change from db:', data);
 
         if (data.operationType === 'insert') {
@@ -144,6 +167,26 @@ const subscribe = function(fn) {
                 },
                 type: data.operationType,
                 collection: data.ns.coll,
+            });
+            return;
+        }
+
+        if (data.operationType === 'modify') {
+            const id = data.documentKey._id.toString();
+            const coll = data.ns.coll;
+
+            // Make sure we don't catch our own delete
+            if (updateBySelf[coll][id]) {
+                delete updateBySelf[coll][id];
+                console.log('Update from self, skip…');
+                return;
+            }
+
+            fn({
+                id: data._id._data,
+                doc: data.fullDocument,
+                type: data.operationType,
+                collection: coll,
             });
             return;
         }
