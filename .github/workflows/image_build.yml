@@ -64,3 +64,10 @@ jobs:
           tags: ghcr.io/schnider94/app:latest
           build-args: |
             NPM_TOKEN=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
+
+      - name: Build and push owampd server
+        uses: docker/build-push-action@v3
+        with:
+          context: ./owampd
+          push: true
+          tags: ghcr.io/schnider94/owampd-server:latest

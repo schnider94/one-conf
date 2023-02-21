@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owampd-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: owampd
+spec:
+  selector:
+    matchLabels:
+      app: owampd
+  template:
+    metadata:
+      labels:
+        app: owampd
+    spec:
+      containers:
+      - name: owampd
+        image: ghcr.io/schnider94/owampd-server:latest
+        ports:
+        - containerPort: 861
+      terminationGracePeriodSeconds: 60
