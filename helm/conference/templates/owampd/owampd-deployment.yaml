@@ -14,6 +14,8 @@ spec:
       labels:
         app: owampd
     spec:
+      imagePullSecrets:
+        - name: docker-registry-secret
       containers:
       - name: owampd
         image: ghcr.io/schnider94/owampd-server:latest
