@@ -32,53 +32,86 @@ For the frontend we have a running nginx server which will return the bundled ap
 
 ## Tools
 
-### Helm
-Package manager for kubernetes.
+### [Docker](https://www.docker.com/)
+All the microservices for this project are build with Docker, this makes it more easy to deploy and move them to different environments.
+Docker basically builds images which then can be pulled and run everywhere as containers. To orchestrate these contaieners in the public and private cloud I used Kubernetes:
 
-### Kubernetes
-Orchestrator for container -> cloud.
+### [Kubernetes](https://kubernetes.io/)
+Kubernetes (also called k8s) is an orchastrator for container.
+As it is open source and is used a lot by the industry it was easy to find documentation and support. 
+For these reasons it was trivial to find a k8s engine to run it on a private running server as well as on a public cloud provider.
 
-### Docker
-Creating of Docker images
+### [k3s](https://k3s.io/)
+k3s was built specifically for Edge Computing, it was perfect for the private cloud of this project.
+The private kubernetes cluster runs on a mini PC with Debian. This k8s distribution was easy to setup and ran without any problems for the last months.
 
-### Github packages
-Registry for NPM packages and Docker images
+### [Google Cloud](https://cloud.google.com/) with [GKE](https://cloud.google.com/kubernetes-engine)
+As Google is also the company behind Kubernetes they have the one of the best kubernetes engines for a public cloud. The setup was quite straight forward, though I had a few problems with the configuration of the template files and had to differantiate between public and private. Mainly because the ingress on GKE works differently than on k3s.
 
-### HelmBay
-Registry for Helm Charts
+Else Google Cloud was a good choice as I could use a student account and just pause the pods when I was not using them. This was done by running the helper script I wrote `/scripts/cloud/pause.sh` which will put the replicas to `0` so no node is running.
+This was then easy to start again by running `/scripts/cloud/start.sh` and I could directly start working again.
 
-### RabbitMQ
-Messagebroker
+### [Helm](https://helm.sh/docs/)
+Helm is a package manager for kubernetes. It simplifies deploying to kubernetes with different values and settings for an environment. Because this it was a good choice for this project, as it would simplify the deployment between public and private cloud, with as much reusable configs as possible.
 
-### Google Cloud with GKE
-Public cloud kubernetes Cluster
+The packages deployed by Helm are called Charts, these Charts can have dependencies. And also need to be pushed to a repository, for this I used HelmBay, a free Helm registry, which I will describe next.
 
-### k3s
-Private cloud kubernetes Cluster
+### [HelmBay](https://helmbay.com/)
+Free Repository for Helm Charts. Just a repository to push Helm Charts and pull them from everywhere. This way it is easy to deploy Helm Charts from everywhere and have specific Versions.
 
-### bind9
-Local running DNS server
+### [Github packages](https://github.com/features/packages)
+Registry for NPM packages and Docker images.
 
-### k9s
-Kubernetes controlling tool
+I needed a free way to push and pull my NPM packages and Docker images. As Github has a student account which gives a lot of free usable features I decided to use Github packages.
 
-### Vue
-Frontend library
+This way also writing Github actions that build and push docker images to github packages was very easy.
 
-### PrimeVue + PrimeFlex
-UI library for components
+### [Github actions](https://github.com/features/actions)
+Continuous Integration (also: CI) which is directly configured by pushing yaml files to `/.github/workflows` and has for students quite a bit free computing power.
+As I also have my packages and source code in Github this was straight forward to setup and use.
 
-### asdf
+### [bind9](https://wiki.ubuntuusers.de/DNS-Server_Bind/)
+Package for linux that runs a DNS server locally.
+I ran this on a raspberry pi with Debian to forward all requests to `www.schnider.io` to the private cloud, when the user was connected to the private Wifi.
+
+### [k9s](https://k9scli.io/)
+Tool to manage kubernetes running directly in the terminal.
+With this tool I was able to directly access kubernetes resources and interact with them, through a terminal GUI. This tool supercharged debugging and working with kubernetes in multiple contexts.
+
+### [NodeJS](https://nodejs.org/)
+For microservices I used NodeJS. It is the most used javascript engine for server and I was already familiar with it, so it was a good choice to make good progress.
+
+### [ExpressJS](https://expressjs.com/)
+Express is a minimilist web framework, which can be used to build a simple API, like I did in this project. It also has support for many plugins like [Passport](http://www.passportjs.org/), which I used for authentication.
+
+### [MongoDB](https://www.mongodb.com/)
+For databases I used MongoDB, as it basically is a big JSON document it is perfect for microservices and rapid development. It also provides ChangeStreams which are perfect for the SyncService I was writing. Additionally does it use minimal resources.
+
+### [RabbitMQ](https://www.rabbitmq.com/)
+As we used RabbitMQ also in the Project in the last year, and it is the only MessageBroker I worked with, I again chose RabbitMQ. It also has a great NodeJS package which simplified working with it immense.
+
+I also found a Helm Chart for it so I could add it as dependency to my public Cloud.
+
+### [Vue](https://vuejs.org/)
+Vue is a widely used frontend library that I am personally very familiar with. It comes with a cli that makes it easy to setup and run a simple app.
+
+### [PrimeVue](https://primevue.org/) + [PrimeFlex](https://www.primefaces.org/primeflex/)
+UI library for vue components
+To keep development time on the frontend as low as possible I decided to use two UI libraries that would provide most of the components I will use. These two libraries were suggested by multiple blog articles.
+
+These libraries were exhausting to work with at first, but with time I got more used to them. But they felt like a blocker at first.
+
+### [asdf](https://asdf-vm.com/)
 Package manager for different tools
+This tool helps always using the correct version of a tool, in my case nodeJS. It is possible to set which version should be used in the `.tool-versions` file.
 
-### NodeJS with Express
-For microservices
-
+As I use multiple projects on my machine it helped always using the same version in this project.
 
 ## Performance
 Comparison of the performance of requests to Public Cloud and Private Cloud.
 
 ### Ping
+Most basic way to measure the round trip of a packet.
 
 #### Private
 
@@ -148,9 +181,10 @@ PING public.schnider.io (34.117.87.109): 56 data bytes
 round-trip min/avg/max/stddev = 25.943/47.005/135.997/30.756 ms
 ```
 
-### IPerf
+### [iperf3](https://iperf.fr/)
+Iperf provides a way to measure maximum bandwidth, jitter, packet loss, and many more. I also found a docker image for it so it was straight forward deploying it in the public and private cloud via Helm and measuring it.
 
-#### Private
+#### Private (Measure Bandwidth)
 
 ```bash
 iperf3 -c private.schnider.io
@@ -178,7 +212,7 @@ Connecting to host private.schnider.io, port 5201
 iperf Done.
 ```
 
-#### Public
+#### Public (Measure Bandwidth)
 
 ```bash
 iperf3 -c 34.118.41.108
@@ -208,7 +242,7 @@ iperf Done.
 
 ### OWAMP
 
-Doesn't work currently
+Doesn't work currently, but was mostly done with [iperf](#iperf3).
 
 ### Chrome DevTools
 
