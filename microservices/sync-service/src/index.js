@@ -1,48 +1,93 @@
 const rabbitmq = require('./rabbitmq');
 const mongodb = require('./mongodb');
 
+const rabbit = {
+    isRunning: false,
+    publish: null,
+};
+
+const mongo = {
+    isRunning: false,
+    publish: null,
+};
+
 const sentBySelf = {};
 
-const msgToDbGenerator = function(updateDb) {
-    return msg => {
-        const data = JSON.parse(msg);
+const msgToDb = function(msg) {
+    const data = JSON.parse(msg);
 
-        console.log(`Change from msq queue:`, data);
+    console.log(`Change from msq queue:`, data);
 
-        if (sentBySelf[data.id]) {
-            delete sentBySelf[data.id];
-            console.log('Sent by self, ignore…');
+    if (sentBySelf[data.id]) {
+        delete sentBySelf[data.id];
+        console.log('Sent by self, ignore…');
 
-            return;
-        }
-
-        updateDb(data);
+        return;
     }
+
+    mongo.publish(data);
+};
+
+const dbToMsg = function(data) {
+    console.log(`Change from db:`, data);
+
+    sentBySelf[data.id] = true;
+
+    rabbit.publish(data);
+};
+
+const startRabbitMQ = function() {
+    rabbitmq.connect(() => {
+        rabbit.isRunning = false;
+        rabbit.publish = null;
+
+        console.log('RabbitMQ connection was closed, reconnect…');
+
+        startRabbitMQ();
+    })
+        .then(({ publish, subscribe }) => {
+            rabbit.isRunning = true;
+            rabbit.publish = publish;
+
+            subscribe(msgToDb);
+
+            console.log('RabbitMQ queue started');
+        })
+        .catch(error => {
+            console.log(error);
+
+            setTimeout(startRabbitMQ, 5000);   
+        });
 }
 
-const dbToMsgGenerator = function(publishMsg) {
-    return data => {
-        console.log(`Change from db:`, data);
+const startMongoDB = function() {
+    mongodb.connect(() => {
+        mongo.isRunning = false;
+        mongo.publish = null;
 
-        sentBySelf[data.id] = true;
+        console.log('MongoDB connection was closed, reconnect…');
 
-        publishMsg(data);
-    }
+        startMongoDB();
+    })
+        .then(({ publish, subscribe }) => {
+            mongo.isRunning = true;
+            mongo.publish = publish;
+
+            // TODO: Merge Databases
+            // Upsert all changes into RabbitMQ
+
+            subscribe(dbToMsg);
+
+            console.log('MongoDB watcher started');
+        })
+        .catch(error => {
+            console.log(error);
+
+            setTimeout(startMongoDB, 5000);   
+        });
 }
 
 exports.start = function() {
-    const dbPromise = mongodb.connect();
-    const rabbitPromise = rabbitmq.connect();
-
-    Promise
-        .all([dbPromise, rabbitPromise])
-        .then(([mongodb, rabbitmq]) => {
-            const dbToMsg = dbToMsgGenerator(rabbitmq.publish);
-            const msgToDb = msgToDbGenerator(mongodb.publish);
-
-            rabbitmq.subscribe(msgToDb);
-            mongodb.subscribe(dbToMsg);
-        })
-        .then(() => console.log('All services started'))
-        .catch(error => console.error('Errors starting listeners:', error));
+    startRabbitMQ();
+    startMongoDB();
 }

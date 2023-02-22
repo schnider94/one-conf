@@ -15,11 +15,13 @@
     const state = reactive({
         email: '',
         password: '',
+        name: '',
     });
 
     const rules = {
         email: { required, email },
         password: { required },
+        name: { required },
     };
 
     const authStore = useAuthStore()
@@ -36,7 +38,11 @@
         if (!isFormValid) return
 
         authStore
-            .register(state.email, state.password)
+            .register({
+                email: state.email,
+                password: state.password,
+                name: state.name,
+            })
             .then(() => {
                 toast.add({
                     severity:'success',
@@ -62,6 +68,26 @@
                 class="flex flex-column p-fluid gap-2"
                 @submit.prevent="handleSubmit(!v$.$invalid)"
             >
+                <div class="field">
+                    <div class="p-float-label p-input-icon-right">
+                        <i class="pi pi-user"></i>
+                        <InputText
+                            id="name"
+                            v-model="v$.name.$model"
+                            :class="{'p-invalid':v$.name.$invalid && submitted}"
+                            aria-describedby="name-error"
+                        />
+                        <label for="name" :class="{'p-error': v$.name.$invalid && submitted}">Name</label>
+                    </div>
+                    <span v-if="v$.name.$error && submitted">
+                        <span id="name-error" v-for="(error, index) of v$.name.$errors" :key="index">
+                            <small class="p-error">{{error.$message}}</small>
+                        </span>
+                    </span>
+                    <small v-else-if="(v$.name.$invalid && submitted) || v$.name.$pending.$response" class="p-error">
+                        {{ v$.name.required.$message.replace('Value', 'Name') }}
+                    </small>
+                </div>
                 <div class="field">
                     <div class="p-float-label p-input-icon-right">
                         <i class="pi pi-envelope"></i>

@@ -1,7 +1,7 @@
 const amqp = require('amqplib');
 
 
-exports.connect = function() {
+exports.connect = function(onClose) {
     const user = process.env.RABBIT_USER;
     const password = process.env.RABBIT_PASSWORD;
     const host = process.env.RABBIT_HOST;
@@ -13,7 +13,11 @@ exports.connect = function() {
 
     return amqp
         .connect(connectString)
-        .then(connection => connection.createChannel())
+        .then(connection => {
+            connection.on('close', onClose);
+
+            return connection.createChannel();
+        })
         .then(channel => {
             const chok = channel.assertExchange(exchange, 'fanout', { durable: true });
 

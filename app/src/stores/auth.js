@@ -53,8 +53,8 @@ export const useAuthStore = defineStore('auth', {
     login(email, password) {
       return login(email, password).then(data => this.loginSucceeded(data.token));
     },
-    register(email, password) {
-      return register(email, password);
+    register(props) {
+      return register(props);
     },
     logout() {
       this.logoutSucceeded();

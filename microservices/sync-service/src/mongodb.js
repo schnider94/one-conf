@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const { conference, keynote, user } = require('@schnider94/models');
 const database = require('@schnider94/database');
+const { omitSecureFields } = require('./security');
+const { getUserModel, getConferenceModel, getKeynoteModel } = require('./models');
 
 const connect = function() {
     return new Promise(resolve => {
@@ -13,36 +14,7 @@ const connect = function() {
     });
 }
 
-let UserModel;
-let ConferenceModel;
-let KeynoteModel;
-
-const getUserModel = function() {
-    if (UserModel) return UserModel;
-
-    const UserSchema = user.create();
-    UserModel = mongoose.connection.model('user', UserSchema);
-
-    return UserModel;
-}
-
-const getConferenceModel = function() {
-    if (ConferenceModel) return ConferenceModel;
-
-    const ConferenceSchema = conference.create();
-    ConferenceModel = mongoose.connection.model('conference', ConferenceSchema);
-
-    return ConferenceModel;
-}
-
-const getKeynoteModel = function() {
-    if (KeynoteModel) return KeynoteModel;
-
-    const KeynoteSchema = keynote.create();
-    KeynoteModel = mongoose.connection.model('keynote', KeynoteSchema);
-
-    return KeynoteModel;
-}
+let lastToken;
 
 const insertBySelf = {
     users: {},
@@ -56,6 +28,12 @@ const deleteBySelf = {
     keynotes: {},
 };
 
+const updateBySelf = {
+    users: {},
+    conferences: {},
+    keynotes: {},
+};
+
 
 const insertUser = doc => getUserModel().create(doc);
 const insertConference = doc => getConferenceModel().create(doc);
@@ -64,6 +42,10 @@ const insertKeynote = doc => getKeynoteModel().create(doc);
 const deleteUser = ({ _id }) => getUserModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
 const deleteConference = ({ _id }) => getConferenceModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
 const deleteKeynote = ({ _id }) => getKeynoteModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
+
+const updateUser = doc => getUserModel().update(doc);
+const updateConference = doc => getConferenceModel().update(doc);
+const updateKeynote = doc => getKeynoteModel().update(doc);
 
 const _insert = function(collection, doc) {
     const inserts = {
@@ -91,11 +73,24 @@ const _delete = function(collection, doc) {
     else console.error(`Delete for collection "${collection}" does not exist`);
 }
 
+const _update = function(collection, doc) {
+    const updaters = {
+        users: updateUser,
+        conferences: updateConference,
+        keynotes: updateKeynote,
+    }
+
+    updateBySelf[collection][doc._id] = true;
+
+    if (updaters[collection]) updaters[collection](doc);
+    else console.error(`Update for collection "${collection}" does not exist`);
+}
 
 const updateDB = function(data) {
     const types = {
         insert: _insert,
         delete: _delete,
+        update: _update,
     };
 
     if (types[data.type]) types[data.type](data.collection, data.doc);
@@ -103,8 +98,12 @@ const updateDB = function(data) {
 }
 
 const subscribe = function(fn) {
-    mongoose.connection.watch().on('change', data => {
+    mongoose.connection.watch(undefined, {
+        fullDocument: 'updateLookup',
+        resumeAfter: lastToken,
+    }).on('change', data => {
         console.log('Change from db:', data);
+        lastToken = data._id;
 
         if (data.operationType === 'insert') {
             const id = data.fullDocument._id;
@@ -119,7 +118,7 @@ const subscribe = function(fn) {
 
             fn({
                 id: data._id._data,
-                doc: data.fullDocument,
+                doc: omitSecureFields(data.fullDocument),
                 type: data.operationType,
                 collection: coll,
             });
@@ -148,14 +147,36 @@ const subscribe = function(fn) {
             return;
         }
 
-        fn(data);
+        if (data.operationType === 'update') {
+            const id = data.documentKey._id.toString();
+            const coll = data.ns.coll;
+
+            // Make sure we don't catch our own delete
+            if (updateBySelf[coll][id]) {
+                delete updateBySelf[coll][id];
+                console.log('Update from self, skip…');
+                return;
+            }
+
+            fn({
+                id: data._id._data,
+                doc: omitSecureFields(data.fullDocument),
+                type: data.operationType,
+                collection: coll,
+            });
+            return;
+        }
+
+        console.log('Not supported operation:', data);
     });
 }
 
 
-exports.connect = function() {
+exports.connect = function(onClose) {
     return connect()
-        .then(() => {
+        .then(mongoose => {
+            mongoose.connection.on('disconnected', onClose);
+
             return {
                 subscribe,
                 publish: updateDB,

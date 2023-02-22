@@ -13,11 +13,12 @@ export const login = (email, password) => {
         })
 }
 
-export const register = (email, password) => {
+export const register = ({ email, password, name }) => {
     return axios
         .post('/auth/signup', {
             email,
             password,
+            name,
         })
         .then(response => {
             console.log(response)

@@ -102,6 +102,9 @@
             ></Button>
         </div>
         <div class="w-full flex flex-column gap-2">
+            <h2>
+                Speaker
+            </h2>
             <Card
                 v-for="speaker in speakers"
                 :key="speaker._id"
