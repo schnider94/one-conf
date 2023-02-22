@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { conference, keynote, user } = require('@schnider94/models');
 
 let UserModel;
