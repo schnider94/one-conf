@@ -20,4 +20,3 @@ spec:
         args: ["-s"]
         ports:
         - containerPort: 5201
-      terminationGracePeriodSeconds: 60

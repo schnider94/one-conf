@@ -240,6 +240,43 @@ Connecting to host 34.118.41.108, port 5201
 iperf Done.
 ```
 
+#### Private (Jitter)
+
+```bash
+iperf3 -c private.schnider.io -u -b 1000M
+```
+
+```log
+Connecting to host private.schnider.io, port 5201
+[  7] local 192.168.178.36 port 64022 connected to 192.168.178.30 port 5201
+[ ID] Interval           Transfer     Bitrate         Total Datagrams
+[  7]   0.00-1.00   sec  11.9 MBytes  99.8 Mbits/sec  59506  
+[  7]   1.00-2.00   sec  10.4 MBytes  87.3 Mbits/sec  73036  
+[  7]   2.00-3.00   sec  0.00 Bytes  0.00 bits/sec  0  
+[  7]   3.00-4.00   sec  10.8 MBytes  90.4 Mbits/sec  65017  
+[  7]   4.00-5.00   sec  11.1 MBytes  92.7 Mbits/sec  68317  
+[  7]   5.00-6.00   sec  9.94 MBytes  83.4 Mbits/sec  30606  
+[  7]   6.00-7.00   sec   554 KBytes  4.54 Mbits/sec  46185  
+[  7]   7.00-8.00   sec  0.00 Bytes  0.00 bits/sec  0  
+[  7]   8.00-9.00   sec  10.7 MBytes  89.4 Mbits/sec  73017  
+[  7]   9.00-10.00  sec  9.15 MBytes  76.8 Mbits/sec  96490  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Jitter    Lost/Total Datagrams
+[  7]   0.00-10.00  sec  74.4 MBytes  62.4 Mbits/sec  0.000 ms  0/512174 (0%)  sender
+[  7]   0.00-10.35  sec  65.6 MBytes  53.1 Mbits/sec  0.626 ms  368866/416349 (89%)  receiver
+
+iperf Done.
+```
+
+#### Public (Jitter)
+
+```bash
+```
+
+```log
+
+```
+
 ### OWAMP
 
 Doesn't work currently, but was mostly done with [iperf](#iperf3).
