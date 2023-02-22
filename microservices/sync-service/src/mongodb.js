@@ -204,8 +204,8 @@ const subscribe = function(fn) {
 
 exports.connect = function(onClose) {
     return connect()
-        .then(connection => {
-            connection.on('disconnected', onClose);
+        .then(mongoose => {
+            mongoose.connection.on('disconnected', onClose);
 
             return {
                 subscribe,

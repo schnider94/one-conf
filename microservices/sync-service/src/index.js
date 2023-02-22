@@ -53,7 +53,9 @@ const startRabbitMQ = function() {
 
             console.log('RabbitMQ queue started');
         })
-        .catch(() => {
+        .catch(error => {
+            console.log(error);
+
             setTimeout(startRabbitMQ, 5000);   
         });
 }
@@ -76,9 +78,11 @@ const startMongoDB = function() {
 
             subscribe(dbToMsg);
 
-            console.log('MongoDB queue started');
+            console.log('MongoDB watcher started');
         })
-        .catch(() => {
+        .catch(error => {
+            console.log(error);
+
             setTimeout(startMongoDB, 5000);   
         });
 }
