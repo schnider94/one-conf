@@ -113,6 +113,8 @@ Comparison of the performance of requests to Public Cloud and Private Cloud.
 ### Ping
 Most basic way to measure the round trip of a packet.
 
+![RoundTrips (ms)](https://user-images.githubusercontent.com/36959878/220706324-f9e5acd5-f3c4-4438-85f5-e9b9f943a7af.png)
+
 #### Private
 
 ```bash
@@ -184,7 +186,11 @@ round-trip min/avg/max/stddev = 25.943/47.005/135.997/30.756 ms
 ### [iperf3](https://iperf.fr/)
 Iperf provides a way to measure maximum bandwidth, jitter, packet loss, and many more. I also found a docker image for it so it was straight forward deploying it in the public and private cloud via Helm and measuring it.
 
-#### Private (Measure Bandwidth)
+#### Bandwidth
+
+![Bandwidth (1)](https://user-images.githubusercontent.com/36959878/220706072-b7867d16-01a8-4fd7-9c60-338a67a7a193.png)
+
+##### Private
 
 ```bash
 iperf3 -c private.schnider.io
@@ -212,7 +218,7 @@ Connecting to host private.schnider.io, port 5201
 iperf Done.
 ```
 
-#### Public (Measure Bandwidth)
+##### Public
 
 ```bash
 iperf3 -c 34.118.41.108
@@ -240,7 +246,11 @@ Connecting to host 34.118.41.108, port 5201
 iperf Done.
 ```
 
-#### Private (Jitter)
+#### Jitter
+
+![Jitter (1)](https://user-images.githubusercontent.com/36959878/220706202-28194824-026d-44dd-ad09-31e3505d562f.png)
+
+##### Private
 
 ```bash
 iperf3 -c private.schnider.io -u -b 1000M
@@ -268,7 +278,7 @@ Connecting to host private.schnider.io, port 5201
 iperf Done.
 ```
 
-#### Public (Jitter)
+##### Public
 
 ```bash
 ```
