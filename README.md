@@ -214,7 +214,11 @@ Doesn't work currently
 
 ### Private
 
+<img width="680" alt="Screenshot 2023-02-22 at 13 38 30" src="https://user-images.githubusercontent.com/36959878/220622563-0c382df4-55d5-46e0-ab59-5bb17335bd01.png">
+
 ### Public
+
+<img width="687" alt="Screenshot 2023-02-22 at 13 38 16" src="https://user-images.githubusercontent.com/36959878/220622578-3048ad72-ac81-4a15-879b-c2b82f059471.png">
 
 ## Security
 
