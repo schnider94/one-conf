@@ -86,7 +86,7 @@ const _insert = function(collection, doc) {
 
     insertBySelf[collection][doc._id] = true;
 
-    if (inserts[collection]) inserts[collection](safeDoc);
+    if (inserts[collection]) inserts[collection](doc);
     else console.error(`Insert for collection "${collection}" does not exist`);
 }
 
@@ -112,7 +112,7 @@ const _update = function(collection, doc) {
 
     updateBySelf[collection][doc._id] = true;
 
-    if (updaters[collection]) updaters[collection](safeDoc);
+    if (updaters[collection]) updaters[collection](doc);
     else console.error(`Update for collection "${collection}" does not exist`);
 }
 
