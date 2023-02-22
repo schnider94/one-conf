@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { conference, keynote, user } = require('@schnider94/models');
 const database = require('@schnider94/database');
+const { omitSecureFields } = require('./security');
 
 const connect = function() {
     return new Promise(resolve => {
@@ -13,6 +14,7 @@ const connect = function() {
     });
 }
 
+let lastToken;
 let UserModel;
 let ConferenceModel;
 let KeynoteModel;
@@ -72,8 +74,8 @@ const deleteConference = ({ _id }) => getConferenceModel().deleteOne({ _id: mong
 const deleteKeynote = ({ _id }) => getKeynoteModel().deleteOne({ _id: mongoose.Types.ObjectId(_id) });
 
 const updateUser = doc => getUserModel().update(doc);
-const updateConference = doc => getConferenceModel().deleteOne(doc);
-const updateKeynote = doc => getKeynoteModel().deleteOne(doc);
+const updateConference = doc => getConferenceModel().update(doc);
+const updateKeynote = doc => getKeynoteModel().update(doc);
 
 const _insert = function(collection, doc) {
     const inserts = {
@@ -84,7 +86,7 @@ const _insert = function(collection, doc) {
 
     insertBySelf[collection][doc._id] = true;
 
-    if (inserts[collection]) inserts[collection](doc);
+    if (inserts[collection]) inserts[collection](safeDoc);
     else console.error(`Insert for collection "${collection}" does not exist`);
 }
 
@@ -110,7 +112,7 @@ const _update = function(collection, doc) {
 
     updateBySelf[collection][doc._id] = true;
 
-    if (updaters[collection]) updaters[collection](doc);
+    if (updaters[collection]) updaters[collection](safeDoc);
     else console.error(`Update for collection "${collection}" does not exist`);
 }
 
@@ -118,7 +120,7 @@ const updateDB = function(data) {
     const types = {
         insert: _insert,
         delete: _delete,
-        modify: _update,
+        update: _update,
     };
 
     if (types[data.type]) types[data.type](data.collection, data.doc);
@@ -126,8 +128,12 @@ const updateDB = function(data) {
 }
 
 const subscribe = function(fn) {
-    mongoose.connection.watch(undefined, { fullDocument: true }).on('change', data => {
+    mongoose.connection.watch(undefined, {
+        fullDocument: true,
+        resumeAfter: lastToken,
+    }).on('change', data => {
         console.log('Change from db:', data);
+        lastToken = data._id;
 
         if (data.operationType === 'insert') {
             const id = data.fullDocument._id;
@@ -142,7 +148,7 @@ const subscribe = function(fn) {
 
             fn({
                 id: data._id._data,
-                doc: data.fullDocument,
+                doc: omitSecureFields(data.fullDocument),
                 type: data.operationType,
                 collection: coll,
             });
@@ -171,7 +177,7 @@ const subscribe = function(fn) {
             return;
         }
 
-        if (data.operationType === 'modify') {
+        if (data.operationType === 'update') {
             const id = data.documentKey._id.toString();
             const coll = data.ns.coll;
 
@@ -184,21 +190,23 @@ const subscribe = function(fn) {
 
             fn({
                 id: data._id._data,
-                doc: data.fullDocument,
+                doc: omitSecureFields(data.fullDocument),
                 type: data.operationType,
                 collection: coll,
             });
             return;
         }
 
-        fn(data);
+        console.log('Not supported operation:', data);
     });
 }
 
 
-exports.connect = function() {
+exports.connect = function(onClose) {
     return connect()
-        .then(() => {
+        .then(connection => {
+            connection.on('disconnected', onClose);
+
             return {
                 subscribe,
                 publish: updateDB,
