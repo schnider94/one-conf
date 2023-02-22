@@ -87,6 +87,9 @@ Express is a minimilist web framework, which can be used to build a simple API, 
 ### [MongoDB](https://www.mongodb.com/)
 For databases I used MongoDB, as it basically is a big JSON document it is perfect for microservices and rapid development. It also provides ChangeStreams which are perfect for the SyncService I was writing. Additionally does it use minimal resources.
 
+### [MongoDB Compass](https://www.mongodb.com/products/compass)
+A GUI to work with MongoDB.
+
 ### [RabbitMQ](https://www.rabbitmq.com/)
 As we used RabbitMQ also in the Project in the last year, and it is the only MessageBroker I worked with, I again chose RabbitMQ. It also has a great NodeJS package which simplified working with it immense.
 
