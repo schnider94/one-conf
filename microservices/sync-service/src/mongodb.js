@@ -129,7 +129,7 @@ const updateDB = function(data) {
 
 const subscribe = function(fn) {
     mongoose.connection.watch(undefined, {
-        fullDocument: 'required',
+        fullDocument: 'default',
         resumeAfter: lastToken,
     }).on('change', data => {
         console.log('Change from db:', data);
