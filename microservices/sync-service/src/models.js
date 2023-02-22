@@ -4,7 +4,7 @@ let UserModel;
 let ConferenceModel;
 let KeynoteModel;
 
-export const getUserModel = function() {
+exports.getUserModel = function() {
     if (UserModel) return UserModel;
 
     const UserSchema = user.create();
@@ -13,7 +13,7 @@ export const getUserModel = function() {
     return UserModel;
 }
 
-export const getConferenceModel = function() {
+exports.getConferenceModel = function() {
     if (ConferenceModel) return ConferenceModel;
 
     const ConferenceSchema = conference.create();
@@ -22,7 +22,7 @@ export const getConferenceModel = function() {
     return ConferenceModel;
 }
 
-export const getKeynoteModel = function() {
+exports.getKeynoteModel = function() {
     if (KeynoteModel) return KeynoteModel;
 
     const KeynoteSchema = keynote.create();
