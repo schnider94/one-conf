@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const { conference, keynote, user } = require('@schnider94/models');
 const database = require('@schnider94/database');
 const { omitSecureFields } = require('./security');
+const { getUserModel, getConferenceModel, getKeynoteModel } = require('./models');
 
 const connect = function() {
     return new Promise(resolve => {
@@ -15,36 +15,6 @@ const connect = function() {
 }
 
 let lastToken;
-let UserModel;
-let ConferenceModel;
-let KeynoteModel;
-
-const getUserModel = function() {
-    if (UserModel) return UserModel;
-
-    const UserSchema = user.create();
-    UserModel = mongoose.connection.model('user', UserSchema);
-
-    return UserModel;
-}
-
-const getConferenceModel = function() {
-    if (ConferenceModel) return ConferenceModel;
-
-    const ConferenceSchema = conference.create();
-    ConferenceModel = mongoose.connection.model('conference', ConferenceSchema);
-
-    return ConferenceModel;
-}
-
-const getKeynoteModel = function() {
-    if (KeynoteModel) return KeynoteModel;
-
-    const KeynoteSchema = keynote.create();
-    KeynoteModel = mongoose.connection.model('keynote', KeynoteSchema);
-
-    return KeynoteModel;
-}
 
 const insertBySelf = {
     users: {},
