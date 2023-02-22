@@ -8,11 +8,14 @@ const setupPassport = function() {
         new localStrategy(
             {
                 usernameField: 'email',
-                passwordField: 'password'
+                passwordField: 'password',
+                passReqToCallback: true,
             },
-            async (email, password, done) => {
+            async (req, email, password, done) => {
                 try {
-                    const user = new UserModel({ email, password });
+                    const name = req.body.name;
+
+                    const user = new UserModel({ email, password, name });
                     await user.save();
     
                     return done(null, user);
