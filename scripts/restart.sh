@@ -13,8 +13,4 @@ else
     kubectl config use-context cloud-context
 fi
 
-# Upgrade or Install the chart on the machine
-helm upgrade -i -n default conference schnider94/conference \
-    -f "$SCRIPT_DIR/../helm/conference/values.yaml" \
-    -f "$SCRIPT_DIR/../helm/conference/values.$ENV.yaml" \
-    --force
+kubectl rollout restart deployment
