@@ -2,9 +2,18 @@ const mongoose = require('mongoose');
 
 const KeynoteModelDefault = require('@schnider94/models').keynote;
 
-const KeynoteSchema = KeynoteModelDefault.create({
+let KeynoteSchema;
 
-});
+if (process.env.CLOUD_ENVIRONMENT === 'private') {
+    KeynoteSchema = KeynoteModelDefault.create({
+        secretDescription: {
+            type: String,
+            require: false,
+        },
+    });            
+} else {
+    KeynoteSchema = KeynoteModelDefault.create({});      
+}
 
 KeynoteModelDefault.setup(KeynoteSchema);
 

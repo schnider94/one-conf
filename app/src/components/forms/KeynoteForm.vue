@@ -12,6 +12,7 @@
 
     import { create, remove, update } from '@/API/keynotes'
     import { search } from '@/API/user'
+    import { useCurrentConference } from '@/stores/current-conference'
 
     const props = defineProps({
         conferenceId: {
@@ -34,6 +35,10 @@
             type: String,
             default: ''
         },
+        secretDescription: {
+            type: String,
+            default: null
+        },
         startDate: {
             type: Date,
             default: null,
@@ -51,6 +56,8 @@
             default: false,
         },
     });
+
+    const currentConferenceStore = useCurrentConference()
 
     const state = reactive({
         location: props.location,
@@ -83,6 +90,7 @@
             location: state.location,
             name: state.name,
             description: state.description,
+            secretDescription: state.secretDescription,
             startDate: state.date[0].toISOString(),
             endDate: state.date[1].toISOString(),
             conference: props.conferenceId,
@@ -96,6 +104,7 @@
             location: state.location,
             name: state.name,
             description: state.description,
+            secretDescription: state.secretDescription,
             startDate: state.date[0].toISOString(),
             endDate: state.date[1].toISOString(),
             conference: props.conferenceId
@@ -194,6 +203,30 @@
             </span>
             <small v-else-if="(v$.description.$invalid && submitted) || v$.description.$pending.$response" class="p-error">
                 {{ v$.description.required.$message.replace('Value', 'Description') }}
+            </small>
+        </div>
+        <div
+            v-if="currentConferenceStore.id === conferenceId"
+            class="field"
+        >
+            <div class="p-float-label">
+                <Textarea
+                    id="secretDescription"
+                    v-model="v$.secretDescription.$model"
+                    autoResize
+                    rows="3"
+                    :class="{'p-invalid':v$.secretDescription.$invalid && submitted}"
+                    aria-describedby="secretDescription-error"
+                ></Textarea>
+                <label for="secretDescription" :class="{'p-error': v$.secretDescription.$invalid && submitted}">Secret Description</label>
+            </div>
+            <span v-if="v$.secretDescription.$error && submitted">
+                <span id="secretDescription-error" v-for="(error, index) of v$.secretDescription.$errors" :key="index">
+                    <small class="p-error">{{error.$message}}</small>
+                </span>
+            </span>
+            <small v-else-if="(v$.secretDescription.$invalid && submitted) || v$.secretDescription.$pending.$response" class="p-error">
+                {{ v$.secretDescription.required.$message.replace('Value', 'Secret Description') }}
             </small>
         </div>
         <div class="field">

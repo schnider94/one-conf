@@ -20,13 +20,14 @@
         <template #content>
             <div class="w-full flex flex-row align-items-center justify-content-between">
                 <span>
-
+                    Attendees: 
                 </span>
                 <span>
-                    Attendees: {{ keynote.attendees.length }}
+                    {{ keynote.attendees.length }}
                 </span>
             </div>
-            <p>{{ keynote.description }}</p>
+            <p v-if="keynote.secretDescription">{{ keynote.secretDescription }}</p>
+            <p v-else>{{ keynote.description }}</p>
         </template>
     </Card>
 </template>
