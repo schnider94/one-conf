@@ -1,10 +1,10 @@
 on: [push]
 
+permissions: write-all
+
 jobs:
   build-images:
     runs-on: ubuntu-latest
-    permissions:
-      packages: admin
     steps:
       - name: Checkout
         uses: actions/checkout@v3
