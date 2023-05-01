@@ -11,5 +11,5 @@ data:
   DB_PASSWORD: {{ $.Values.database.password }}
   # TODO: Make a secret
   JWT_SECRET: A?D(G+KbPeShVmYq3s6v9y$B&E)H@McQfTjWnZr4u7w!z%C*F-JaNdRgUkXp2s5v
-  CURRENT_CONFERENCE: {{ .Values.information.conferenceId }}
+  CURRENT_CONFERENCE: {{ $.Values.information.conferenceId }}
 {{- end }}

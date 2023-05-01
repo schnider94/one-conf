@@ -23,10 +23,10 @@ microservices:
     port: 4003
 
 testing:
-  iperf: true
-  owamp: true
+  iperf: false
+  owamp: false
   iperfChart: false
   perfsonar: false
 
 information:
-  conferenceId: null
+  conferenceId: 644f9472ed14e0becce981ff

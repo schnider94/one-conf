@@ -23,7 +23,7 @@ microservices:
     port: 4003
 
 testing:
-  iperf: true
-  owamp: true
+  iperf: false
+  owamp: false
   iperfChart: false
   perfsonar: false

@@ -21,7 +21,7 @@
     }
 
     const onCurrentConference = () => {
-        router.push(`/conference/${currentConferenceStore._id}`);
+        router.push(`/conference/${currentConferenceStore.id}`);
     }
 
     const onLogout = () => {
@@ -32,18 +32,21 @@
 </script>
 
 <template>
-    <div class="w-full flex flex-col sticky" :style="{ height: '80px' }">
+    <div class="w-full flex flex-column sticky">
         <div
             v-if="currentConferenceStore.name"
-            class="w-full bg-pink-500 flex flex-row align-items-center justify-content-center"
-            :style="{ height: '20px' }"
+            class="w-full bg-blue-300 flex flex-row align-items-center justify-content-center cursor-pointer"
+            :style="{ height: '30px' }"
             @click="onCurrentConference"
         >
-            <h2 class="text-sm text-center">
-                {{ currentConferenceStore.name }}
+            <h2 class="text-sm text-center font-medium">
+                You are at: <strong>{{ currentConferenceStore.name }}</strong>
             </h2>
         </div>
-        <div class="w-full flex flex-row align-items-center bg-blue-400">
+        <div
+            class="w-full flex flex-row align-items-center bg-blue-400"
+            :style="{ height: '60px' }"
+        >
             <div class="w-3 flex flex-row justify-content-start align-items-center">
                 <Button
                     icon="pi pi-home"
