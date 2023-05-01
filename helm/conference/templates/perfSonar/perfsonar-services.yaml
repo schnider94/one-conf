@@ -1,0 +1,85 @@
+{{ if .Values.testing.perfsonar }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: perfsonar-service
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app: perfsonar
+  ports:
+    - name: iperf2
+      port: 5001
+      targetPort: 5001
+      protocol: TCP
+    - name: iperf3
+      port: 5201
+      targetPort: 5201
+      protocol: TCP
+    - name: lookup
+      port: 8090
+      targetPort: 8090
+      protocol: TCP
+    - name: nuttcp1
+      port: 5000
+      targetPort: 5000
+      protocol: TCP
+    - name: nuttcp12
+      port: 5101
+      targetPort: 5101
+      protocol: TCP
+    - name: ntp
+      port: 123
+      targetPort: 123
+      protocol: TCP
+    - name: owamp-control
+      port: 861
+      targetPort: 861
+      protocol: TCP
+    - name: twamp
+      port: 862
+      targetPort: 862
+      protocol: TCP
+    {{- range untilStep 8760 9960 1 }}
+    - name: owamp-tcp-{{ . }}
+      port: {{ . }}
+      targetPort: {{ . }}
+      protocol: TCP
+    {{- end }}
+    {{- range untilStep 5890 5900 1 }}
+    - name: simplestream-{{ . }}
+      port: {{ . }}
+      targetPort: {{ . }}
+      protocol: TCP
+    {{- end }}
+    {{- range untilStep 18760 19960 1 }}
+    - name: twamp-tcp-{{ . }}
+      port: {{ . }}
+      targetPort: {{ . }}
+      protocol: TCP
+    {{- end }}
+    {{- range untilStep 8760 9960 1 }}
+    - name: owamp-udp-{{ . }}
+      port: {{ . }}
+      targetPort: {{ . }}
+      protocol: UDP
+    {{- end }}
+    {{- range untilStep 33434 33634 1 }}
+    - name: traceroute-{{ . }}
+      port: {{ . }}
+      targetPort: {{ . }}
+      protocol: UDP
+    {{- end }}
+    {{- range untilStep 18760 19960 1 }}
+    - name: twamp-udp-{{ . }}
+      port: {{ . }}
+      targetPort: {{ . }}
+      protocol: UDP
+    {{- end }}
+{{- if eq .Values.env "private" }}
+  externalIPs:
+  - 192.168.178.30
+{{- end }}
+{{ end }}

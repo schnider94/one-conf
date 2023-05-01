@@ -19,13 +19,6 @@ spec:
   rules:
   - http:
       paths:
-      - path: /tools/iperf
-        pathType: Prefix
-        backend:
-          service:
-            name: iperf-service
-            port:
-              number: 5201
 {{- range $v := .Values.microservices }}
       - path: /api/{{ $v.name }}
         pathType: Prefix

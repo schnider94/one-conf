@@ -1,3 +1,4 @@
+{{ if .Values.testing.owamp }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,6 +20,18 @@ spec:
       containers:
       - name: owampd
         image: ghcr.io/schnider94/owampd-server:latest
+        command: ["owampd"]
+        args: ["-f", "-Z", "-a", "O", "-P", "8760-8761"]
         ports:
         - containerPort: 861
+          protocol: TCP
+        - containerPort: 8760
+          protocol: TCP
+        - containerPort: 8761
+          protocol: TCP
+        - containerPort: 8760
+          protocol: UDP
+        - containerPort: 8761
+          protocol: UDP
       terminationGracePeriodSeconds: 60
+{{ end }}

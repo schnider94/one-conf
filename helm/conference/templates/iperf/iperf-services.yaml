@@ -1,10 +1,12 @@
+{{ if .Values.testing.iperf }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: iperf-tcp-service
+  name: iperf-service
   namespace: {{ $.Release.Namespace }}
 spec:
   type: LoadBalancer
+  externalTrafficPolicy: Local
   selector:
     app: iperf
   ports:
@@ -12,7 +14,12 @@ spec:
       port: 5201
       targetPort: 5201
       protocol: TCP
+    - name: iperf-udp
+      port: 5201
+      targetPort: 5201
+      protocol: UDP
 {{- if eq .Values.env "private" }}
   externalIPs:
   - 192.168.178.30
 {{- end }}
+{{ end }}

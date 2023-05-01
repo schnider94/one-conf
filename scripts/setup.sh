@@ -17,4 +17,4 @@ kubectl config use-context "$CLUSTER_NAME-context"
 gcloud components install kubectl
 gcloud components install gke-gcloud-auth-plugin
 gcloud container clusters get-credentials conf-cloud --region europe-central2
-kubectl config rename-context gke_elegant-verbena-370407_europe-central2_conf-cloud cloud-context
+kubectl config rename-context gke_centering-talon-383914_europe-central2_conf-cloud cloud-context

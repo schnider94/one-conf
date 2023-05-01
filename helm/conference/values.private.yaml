@@ -21,3 +21,9 @@ microservices:
   - name: keynote
     image: ghcr.io/schnider94/keynote_service:latest
     port: 4003
+
+testing:
+  iperf: true
+  owamp: true
+  iperfChart: false
+  perfsonar: false

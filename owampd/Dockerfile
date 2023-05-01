@@ -13,5 +13,5 @@ RUN cd owamp/ && \
     make && \
     ln -s /owamp/owampd/owampd /usr/local/bin/
 
-CMD ["owampd", "-f", "-Z", "-a", "O"]
+CMD ["owampd", "-f", "-Z", "-a", "O", "-P", "8760-8761"]
 EXPOSE 861

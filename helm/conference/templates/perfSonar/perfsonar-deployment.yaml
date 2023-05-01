@@ -1,0 +1,63 @@
+{{ if .Values.testing.perfsonar }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: perfsonar-deployment
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: perfsonar
+spec:
+  selector:
+    matchLabels:
+      app: perfsonar
+  template:
+    metadata:
+      labels:
+        app: perfsonar
+    spec:
+      containers:
+      - name: perfsonar
+        image: perfsonar/testpoint
+        ports:
+        - containerPort: 5001
+          protocol: TCP
+        - containerPort: 5201
+          protocol: TCP
+        - containerPort: 8090
+          protocol: TCP
+        - containerPort: 5000
+          protocol: TCP
+        - containerPort: 5101
+          protocol: TCP
+        - containerPort: 123
+          protocol: TCP
+        - containerPort: 861
+          protocol: TCP
+        - containerPort: 862
+          protocol: TCP
+        {{- range untilStep 8760 9960 1 }}
+        - containerPort: {{ . }}
+          protocol: TCP
+        {{- end }}
+        {{- range untilStep 5890 5900 1 }}
+        - containerPort: {{ . }}
+          protocol: TCP
+        {{- end }}
+        {{- range untilStep 18760 19960 1 }}
+        - containerPort: {{ . }}
+          protocol: TCP
+        {{- end }}
+        {{- range untilStep 8760 9960 1 }}
+        - containerPort: {{ . }}
+          protocol: UDP
+        {{- end }}
+        {{- range untilStep 33434 33634 1 }}
+        - containerPort: {{ . }}
+          protocol: UDP
+        {{- end }}
+        {{- range untilStep 18760 19960 1 }}
+        - containerPort: {{ . }}
+          protocol: UDP
+        {{- end }}
+      terminationGracePeriodSeconds: 60
+{{ end }}

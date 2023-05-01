@@ -7,7 +7,7 @@ database:
 
 rabbitmq:
   enabled: false
-  host: "34.118.88.206"
+  host: "34.118.70.78"
   exchange_name: sync
   service:
     type: LoadBalancer
