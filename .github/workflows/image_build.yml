@@ -67,9 +67,9 @@ jobs:
           build-args: |
             NPM_TOKEN=${{ secrets.NPM_TOKEN }}
 
-      - name: Build and push owampd server
-        uses: docker/build-push-action@v3
-        with:
-          context: ./owampd
-          push: true
-          tags: ghcr.io/schnider94/owampd-server:latest
+      # - name: Build and push owampd server
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: ./owampd
+      #     push: true
+      #     tags: ghcr.io/schnider94/owampd-server:latest
