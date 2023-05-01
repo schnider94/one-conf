@@ -1,2 +1,4 @@
 **/node_modules/
 scripts/local/private_key
+.DS_STORE
+*.tgz
