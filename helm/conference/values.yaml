@@ -15,3 +15,6 @@ rabbitmq:
     username: root
     password: FOeD8FQRseRpc5i6JFHD4eUvupATpcHsE
     erlangCookie: secretcookie
+
+information:
+  conferenceId: null

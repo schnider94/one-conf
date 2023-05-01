@@ -27,3 +27,6 @@ testing:
   owamp: true
   iperfChart: false
   perfsonar: false
+
+information:
+  conferenceId: null

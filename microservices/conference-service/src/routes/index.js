@@ -9,6 +9,26 @@ router.get('/', (_, res) => {
     });
 });
 
+router.get('/current', async (_, res) => {
+    if (!process.env.CURRENT_CONFERENCE) {
+        return res.json({
+            data: null,
+        })
+    }
+    
+    try {
+        const conference = await ConferenceModel
+            .findById(process.env.CURRENT_CONFERENCE)
+            .exec();
+
+        return res.json({
+            data: conference,
+        })
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+});
+
 router.get('/all', async (_, res) => {
     try {
         const conferences = await ConferenceModel.find({}).exec();

@@ -12,6 +12,17 @@ export const getById = function(id) {
 }
 
 
+export const getCurrent = function() {
+    return axios
+        .get(`/conference/current`)
+        .then(({ data }) => {
+            console.log(data);
+
+            return data.data;
+        });
+}
+
+
 export const mine = function() {
     return axios
         .get('/conference/mine')

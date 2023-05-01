@@ -4,9 +4,13 @@
   import Toast from 'primevue/toast'
 
   import { useAuthStore } from '@/stores/auth'
+  import { useCurrentConference } from '@/stores/current-conference'
 
   const authStore = useAuthStore()
+  const currentConferenceStore = useCurrentConference()
+
   authStore.init()
+  currentConferenceStore.init()
 </script>
 
 <template>
