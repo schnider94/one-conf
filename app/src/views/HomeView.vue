@@ -1,10 +1,14 @@
 <script setup>
-  import { useRoute } from 'vue-router'
+  import { watch } from 'vue'
+  import { useRoute, useRouter } from 'vue-router'
   import { useToast } from "primevue/usetoast"
 
   import LoginForm from '@/components/forms/LoginForm.vue'
+  import { useAuthStore } from '@/stores/auth';
 
+  const auth = useAuthStore()
   const toast = useToast()
+  const router = useRouter()
   const route = useRoute()
 
   if (route.query?.returnTo) {
@@ -15,6 +19,10 @@
       life: 3000
     })
   }
+
+  watch(auth.isLoggedIn, (isLoggedIn) => {
+    if (isLoggedIn) router.push('/dashboard')
+  })
 </script>
 
 <template>

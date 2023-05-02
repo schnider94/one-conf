@@ -63,6 +63,7 @@
         location: props.location,
         name: props.name,
         description: props.description,
+        secretDescription: props.secretDescription,
         date: props.isEditing ? [props.startDate, props.endDate] : [],
         speakers: props.speakers,
     });
@@ -71,6 +72,7 @@
         location: { required },
         name: { required },
         description: { required },
+        secretDescription: {},
         date: { required },
         speakers: { required }
     };

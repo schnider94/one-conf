@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
 
 import { login, register } from '@/API/auth'
 import { me } from '@/API/user'
@@ -40,7 +39,6 @@ export const useAuthStore = defineStore('auth', {
     },
     loginSucceeded(token) {
       const currentConference = useCurrentConference()
-      const router = useRouter()
 
       localStorage.setItem('token', token)
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -49,8 +47,6 @@ export const useAuthStore = defineStore('auth', {
 
       this.ensureUser()
       currentConference.update()
-
-      router.push('/dashboard');
     },
     logoutSucceeded() {
       const currentConference = useCurrentConference()
