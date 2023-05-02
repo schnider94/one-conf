@@ -4,6 +4,9 @@ const mongodb = require('./mongodb');
 const rabbit = {
     isRunning: false,
     publish: null,
+    isFlushing: false,
+    isConnecting: true,
+    queue: [],
 };
 
 const mongo = {
@@ -12,9 +15,6 @@ const mongo = {
 };
 
 const sentBySelf = {};
-
-const msgQueue = [];
-let isFlushing = false;
 
 const msgToDb = function(msg) {
     const data = JSON.parse(msg);
@@ -36,35 +36,39 @@ const flushMsgQueue = function() {
     if (msgQueue.length === 0) return;
     if (!rabbit.isRunning) return;
 
-    isFlushing = true;
+    rabbit.isFlushing = true;
 
     console.log('Flushing queue');
 
-    msgQueue.forEach(data => {
+    rabbit.queue.forEach(data => {
+        console.log(`Change from db:`, data);
+
         sentBySelf[data.id] = true;
 
         rabbit.publish(data);
     });
 
-    isFlushing = false;
+    rabbit.isFlushing = false;
 };
 
 const dbToMsg = function(data) {
-    console.log(`Change from db:`, data);
-
-    msgQueue.push(data);
+    rabbit.queue.push(data);
 
     flushMsgQueue();
 };
 
 const startRabbitMQ = function() {
+    if (rabbit.isConnecting) return;
+
+    rabbit.isConnecting = true;
+
     rabbitmq.connect(() => {
         rabbit.isRunning = false;
         rabbit.publish = null;
 
         console.log('RabbitMQ connection was closed, reconnect…');
 
-        startRabbitMQ();
+        setTimeout(startRabbitMQ, 5000);
     })
         .then(({ publish, subscribe }) => {
             rabbit.isRunning = true;
@@ -78,6 +82,9 @@ const startRabbitMQ = function() {
             console.log(error);
 
             setTimeout(startRabbitMQ, 5000);   
+        })
+        .finally(() => {
+            rabbit.isConnecting = false;
         });
 }
 

@@ -16,6 +16,7 @@ exports.connect = function(onClose) {
         .then(connection => {
             connection.on('close', onClose);
             connection.on('error', onClose);
+            process.once('SIGINT', connection.close.bind(connection));
 
             return connection.createChannel();
         })
