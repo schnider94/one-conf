@@ -1,6 +1,6 @@
 {
   "name": "sync-service",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MicroService which manages application example for one-conf.",
   "main": "index.js",
   "scripts": {

@@ -13,6 +13,9 @@ const mongo = {
 
 const sentBySelf = {};
 
+const msgQueue = [];
+let isFlushing = false;
+
 const msgToDb = function(msg) {
     const data = JSON.parse(msg);
 
@@ -28,12 +31,30 @@ const msgToDb = function(msg) {
     mongo.publish(data);
 };
 
+const flushMsgQueue = function() {
+    if (isFlushing) return;
+    if (msgQueue.length === 0) return;
+    if (!rabbit.isRunning) return;
+
+    isFlushing = true;
+
+    console.log('Flushing queue');
+
+    msgQueue.forEach(data => {
+        sentBySelf[data.id] = true;
+
+        rabbit.publish(data);
+    });
+
+    isFlushing = false;
+};
+
 const dbToMsg = function(data) {
     console.log(`Change from db:`, data);
 
-    sentBySelf[data.id] = true;
+    msgQueue.push(data);
 
-    rabbit.publish(data);
+    flushMsgQueue();
 };
 
 const startRabbitMQ = function() {

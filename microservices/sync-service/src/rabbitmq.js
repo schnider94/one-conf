@@ -7,7 +7,7 @@ exports.connect = function(onClose) {
     const host = process.env.RABBIT_HOST;
     const exchange = process.env.RABBIT_EXCHANGE;
 
-    const connectString = `amqp://${user}:${password}@${host}`;
+    const connectString = `amqp://${user}:${password}@${host}?heartbeat=5`;
 
     console.log(`Connect to RabbitMQ: ${connectString}`);
 
@@ -15,6 +15,7 @@ exports.connect = function(onClose) {
         .connect(connectString)
         .then(connection => {
             connection.on('close', onClose);
+            connection.on('error', onClose);
 
             return connection.createChannel();
         })
