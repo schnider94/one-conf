@@ -57,35 +57,42 @@ const dbToMsg = function(data) {
     flushMsgQueue();
 };
 
+function debounce(func, timeout = 300){
+    let timer;
+
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+}
+
+const onError = function() {
+    rabbit.isRunning = false;
+    rabbit.publish = null;
+
+    console.log('RabbitMQ connection was closed, reconnect…');
+
+    startRabbitMQ();
+};
+
+const debouncedOnError = debounce(() => onError(), 5000);
+
 const startRabbitMQ = function() {
-    if (rabbit.isConnecting) return;
+    if (rabbit.isConnecting && !rabbit.isRunning) return;
 
     rabbit.isConnecting = true;
 
-    rabbitmq.connect(() => {
-        rabbit.isRunning = false;
-        rabbit.publish = null;
-
-        console.log('RabbitMQ connection was closed, reconnect…');
-
-        setTimeout(startRabbitMQ, 5000);
-    })
+    rabbitmq.connect(debouncedOnError)
         .then(({ publish, subscribe }) => {
             rabbit.isRunning = true;
             rabbit.publish = publish;
+            rabbit.isConnecting = false;
 
             subscribe(msgToDb);
 
             console.log('RabbitMQ queue started');
         })
-        .catch(error => {
-            console.log(error);
-
-            setTimeout(startRabbitMQ, 5000);   
-        })
-        .finally(() => {
-            rabbit.isConnecting = false;
-        });
+        .catch(debouncedOnError);
 }
 
 const startMongoDB = function() {
