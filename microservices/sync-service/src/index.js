@@ -32,8 +32,8 @@ const msgToDb = function(msg) {
 };
 
 const flushMsgQueue = function() {
-    if (isFlushing) return;
-    if (msgQueue.length === 0) return;
+    if (rabbit.isFlushing) return;
+    if (rabbit.queue.length === 0) return;
     if (!rabbit.isRunning) return;
 
     rabbit.isFlushing = true;
