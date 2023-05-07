@@ -5,7 +5,7 @@ const rabbit = {
     isRunning: false,
     publish: null,
     isFlushing: false,
-    isConnecting: true,
+    isConnecting: false,
     queue: [],
 };
 
