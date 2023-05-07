@@ -92,6 +92,8 @@ const startRabbitMQ = function() {
             subscribe(msgToDb);
 
             console.log('RabbitMQ queue started');
+
+            flushMsgQueue();
         })
         .catch(debouncedOnError);
 }
