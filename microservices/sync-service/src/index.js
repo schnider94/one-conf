@@ -40,13 +40,13 @@ const flushMsgQueue = function() {
 
     console.log('Flushing queue');
 
-    rabbit.queue.forEach(data => {
+    while (data = rabbit.queue.shift()) {
         console.log(`Change from db:`, data);
 
         sentBySelf[data.id] = true;
 
         rabbit.publish(data);
-    });
+    }
 
     rabbit.isFlushing = false;
 };
@@ -69,6 +69,7 @@ function debounce(func, timeout = 300){
 const onError = function() {
     rabbit.isRunning = false;
     rabbit.publish = null;
+    rabbit.isConnecting = false;
 
     console.log('RabbitMQ connection was closed, reconnect…');
 
